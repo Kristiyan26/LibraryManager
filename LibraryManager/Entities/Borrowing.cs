@@ -13,12 +13,12 @@ namespace LibraryManager.Entities
         public int BookId {  get; set; }
 
         [ForeignKey("BookId")]
-        public Book Book { get; set; }
+        public virtual Book Book { get; set; }
    
         public int MemberId { get; set; }
 
         [ForeignKey("MemberId")]
-        public Member Member { get; set; }
+        public virtual Member Member { get; set; }
 
         [Required]
         public DateTime BorrowedOn { get; set; }

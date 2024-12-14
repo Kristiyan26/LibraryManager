@@ -14,10 +14,10 @@ namespace LibraryManager.Entities
 
 
         [ForeignKey("GenreId")]
-        public Genre Genre { get; set; }    
+        public virtual Genre Genre { get; set; }    
 
-        public List<Borrowing> Borrowings { get; set; }    
+        public virtual List<Borrowing> Borrowings { get; set; }    
 
-        public List<BookAuthor> BookAuthors { get; set; }
+        public virtual List<BookAuthor> BookAuthors { get; set; }
     }
 }

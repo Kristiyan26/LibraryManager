@@ -23,10 +23,6 @@ namespace LibraryManager.Controllers
 
             model.Books = context.Books.ToList();
 
-            model.Authors = context.Authors.ToList();   
-
-            model.Genres = context.Genres.ToList(); 
-
             return View(model);
         }
 

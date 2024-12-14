@@ -14,13 +14,13 @@ namespace LibraryManager.Entities
         public int BookId { get; set; }
 
         [ForeignKey("BookId")]
-        public Book Book { get; set; }
+        public virtual Book Book { get; set; }
 
          // second part of the composite key
     
         public int AuthorId { get; set; }
 
         [ForeignKey("AuthorId")]
-        public Author Author { get; set; }
+        public virtual Author Author { get; set; }
     }
 }
