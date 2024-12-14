@@ -1,8 +1,17 @@
-﻿@{
+﻿@model LibraryManager.ViewModels.Home.IndexVM
+@using LibraryManager.Entities
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@foreach (Book book in Model.Books)
+{
+    <div class="row">
+        <div class="col-3">@book.Title</div>
+        <div class="col-3">@Model.Genres.FirstOrDefault(g=>g.GenreId==book.GenreId)</div>
+
+
+    </div>
+
+}

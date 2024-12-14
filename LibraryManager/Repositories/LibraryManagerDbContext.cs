@@ -34,6 +34,32 @@ namespace LibraryManager.Repositories
                 .UseSqlServer("Server=localhost;Database=LibraryManagerDB;Trusted_Connection=True;TrustServerCertificate=true");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Author>().HasData(
+       new Author { AuthorId = 1, Name = "J.K. Rowling" },
+       new Author { AuthorId = 2, Name = "George R.R. Martin" }
+   );
+
+            // Seed Books
+            modelBuilder.Entity<Book>().HasData(
+                new Book { BookId = 1, Title = "Harry Potter and the Philosopher's Stone", GenreId = 1 },
+                new Book { BookId = 2, Title = "A Game of Thrones", GenreId = 2 }
+            );
+
+            // Seed Genres
+            modelBuilder.Entity<Genre>().HasData(
+                new Genre { GenreId = 1, Name = "Fantasy" },
+                new Genre { GenreId = 2, Name = "Epic Fantasy" }
+            );
+
+            // Seed the Join Table: BookAuthor
+            modelBuilder.Entity<BookAuthor>().HasData(
+                new BookAuthor { BookId = 1, AuthorId = 1 }, // Harry Potter by J.K. Rowling
+                new BookAuthor { BookId = 2, AuthorId = 2 }  // Game of Thrones by George R.R. Martin
+            ); 
+        }
+
 
 
     }

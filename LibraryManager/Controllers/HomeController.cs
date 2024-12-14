@@ -1,4 +1,6 @@
-using LibraryManager.Models;
+using LibraryManager.Entities;
+using LibraryManager.Repositories;
+using LibraryManager.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,18 +17,18 @@ namespace LibraryManager.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            LibraryManagerDbContext context = new LibraryManagerDbContext();
+
+            IndexVM model = new IndexVM();
+
+            model.Books = context.Books.ToList();
+
+            model.Authors = context.Authors.ToList();   
+
+            model.Genres = context.Genres.ToList(); 
+
+            return View(model);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
