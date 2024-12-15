@@ -1,3 +1,4 @@
+using LibraryManager.ActionFilters;
 using LibraryManager.Entities;
 using LibraryManager.ExtentionMethods;
 using LibraryManager.Repositories;
@@ -58,6 +59,8 @@ namespace LibraryManager.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        [AuthenticationFilter]
         [HttpGet]
         public IActionResult Logout()
         {

@@ -1,4 +1,5 @@
-﻿using LibraryManager.Entities;
+﻿using LibraryManager.ActionFilters;
+using LibraryManager.Entities;
 using LibraryManager.ExtentionMethods;
 using LibraryManager.Repositories;
 using LibraryManager.ViewModels.Borrowings;
@@ -6,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManager.Controllers
 {
+
+    [AuthenticationFilter]
     public class BorrowingsController : Controller
     {
         public IActionResult Index()
