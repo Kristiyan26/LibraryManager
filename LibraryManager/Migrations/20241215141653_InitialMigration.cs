@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LibraryManager.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,6 +144,11 @@ namespace LibraryManager.Migrations
                     { 1, "Fantasy" },
                     { 2, "Epic Fantasy" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Members",
+                columns: new[] { "MemberId", "FirstName", "LastName", "Password", "Username" },
+                values: new object[] { 1, "Kristiyan", "Lyubenov", "0000", "MladMilioner" });
 
             migrationBuilder.InsertData(
                 table: "Books",

@@ -18,6 +18,9 @@ namespace LibraryManager.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -199,6 +202,16 @@ namespace LibraryManager.Migrations
                     b.HasKey("MemberId");
 
                     b.ToTable("Members");
+
+                    b.HasData(
+                        new
+                        {
+                            MemberId = 1,
+                            FirstName = "Kristiyan",
+                            LastName = "Lyubenov",
+                            Password = "0000",
+                            Username = "MladMilioner"
+                        });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.Book", b =>

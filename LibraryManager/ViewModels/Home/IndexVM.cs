@@ -6,6 +6,10 @@ namespace LibraryManager.ViewModels.Home
     {
         public List<Book> Books { get; set; }
 
+        public List<BookAuthor> BookAuthors { get; set; }   
+
+     
+
 
     }
 }

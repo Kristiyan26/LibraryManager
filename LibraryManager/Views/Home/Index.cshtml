@@ -2,18 +2,26 @@
 @using LibraryManager.Entities
 
 @{
+    Layout = "/Views/Shared/_Site.cshtml";
     ViewData["Title"] = "Home Page";
 }
 
 @foreach (Book book in Model.Books)
 {
+    <br/>
     <div class="row">
-        <div class="col-3">@book.Title</div>
-        <div class="col-3">@book.Genre.Name</div>
         <div class="col-3">
-        
+            <h3>@book.Title</h3>
+        </div>
+        <div class="col-3">
+            <label>Genre: </label>
+            @book.Genre.Name
             </div>
-
+        <div class="col-3">
+            <label>Author: </label>
+            @string.Join(" ",Model.BookAuthors.Where(x=>x.BookId==book.BookId).Select(x=>x.Author.Name).ToList()) 
+        </div>
+                                         
     </div>
 
 }

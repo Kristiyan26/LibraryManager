@@ -20,3 +20,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.menu {
+    display: inline-block;
+    margin: 20px 0px;
+}
+ .menu li {
+        float: left;
+        margin: 0px 20px;
+        list-style: none;
+ }
+
+.menu li a {
+            color: blue;
+            text-decoration: none;
+        }
+
+.header .welcomeMsg {
+    float: right;
+}
