@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManager.Migrations
 {
     [DbContext(typeof(LibraryManagerDbContext))]
-    [Migration("20241215141653_InitialMigration")]
+    [Migration("20241215150834_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -147,6 +147,15 @@ namespace LibraryManager.Migrations
                     b.HasIndex("MemberId");
 
                     b.ToTable("Borrowings");
+
+                    b.HasData(
+                        new
+                        {
+                            BorrowingId = 1,
+                            BookId = 2,
+                            BorrowedOn = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Local),
+                            MemberId = 1
+                        });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.Genre", b =>

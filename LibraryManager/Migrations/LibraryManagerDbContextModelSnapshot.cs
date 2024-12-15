@@ -144,6 +144,15 @@ namespace LibraryManager.Migrations
                     b.HasIndex("MemberId");
 
                     b.ToTable("Borrowings");
+
+                    b.HasData(
+                        new
+                        {
+                            BorrowingId = 1,
+                            BookId = 2,
+                            BorrowedOn = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Local),
+                            MemberId = 1
+                        });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.Genre", b =>

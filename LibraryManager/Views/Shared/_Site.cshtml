@@ -1,4 +1,8 @@
 ﻿@using LibraryManager.Entities;
+@using LibraryManager.ExtentionMethods;
+@{
+    Member loggedMember = this.ViewContext.HttpContext.Session.GetObject<Member>("loggedMember");
+}
 
 
 <html>
@@ -11,15 +15,27 @@
         <h1 class="title">Library</h1>
         <div class="welcomeMsg">
        
-            <span>Hello, Milionerche </span>
+            <span>Hello,
+                @(loggedMember == null ? "Guest" : loggedMember.Username)
+            </span>
                
         </div>
     </div>
     <div class="container">
         <ul class="menu">
-            <li><a href="/Home/Index">HOME</a></li>
+            <li><a href="/Home/Index">Home</a></li>
 
-             <li><a href="/Home/Login">LOGIN</a></li>
+            @if (loggedMember == null)
+            {
+                <li><a href="/Home/Login">Login</a></li>
+            }
+            else
+            {
+                <li><a href="/Borrowings/Index">My Borrowings</a></li>
+                <li><a href="/Home/Logout">Logout</a></li>
+            }
+
+      
         </ul>
     </div>
     <div class="container">

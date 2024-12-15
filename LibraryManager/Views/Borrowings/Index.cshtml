@@ -1,0 +1,23 @@
+﻿@model LibraryManager.ViewModels.Borrowings.IndexVM
+@using LibraryManager.Entities
+
+@{
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "My Borrowings";
+}
+
+
+@foreach (Borrowing borrowing in Model.Borrowings)
+{
+    <br/>
+    <div class="row">
+        <div class="col-3">
+            <h3>@borrowing.Book.Title</h3>
+        </div>
+        <div class="col-3">
+            <label>Borrowed on: </label>
+            <h3>@borrowing.BorrowedOn</h3>
+        </div>
+    </div>
+
+}

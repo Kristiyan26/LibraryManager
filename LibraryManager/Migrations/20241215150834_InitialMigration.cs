@@ -168,6 +168,11 @@ namespace LibraryManager.Migrations
                     { 2, 2 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Borrowings",
+                columns: new[] { "BorrowingId", "BookId", "BorrowedOn", "MemberId", "ReturnOn" },
+                values: new object[] { 1, 2, new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Local), 1, null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BookAuthors_AuthorId",
                 table: "BookAuthors",

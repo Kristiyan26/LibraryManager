@@ -71,6 +71,15 @@ namespace LibraryManager.Repositories
                     LastName = "Lyubenov"
                 });
 
+            modelBuilder.Entity<Borrowing>().HasData(
+                new Borrowing
+                {
+                    BorrowingId = 1,
+                    MemberId = 1,
+                    BookId = 2,
+                    BorrowedOn = DateTime.Today
+                });
+
         }
 
 
