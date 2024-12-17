@@ -93,13 +93,13 @@ namespace LibraryManager.Controllers
             borrowing.BookId = book.BookId;  
             borrowing.BorrowedOn= DateTime.Now;
 
-            Borrowing check = context.Borrowings.FirstOrDefault(x => x.MemberId == borrowing.MemberId
-                                                                && x.BookId == borrowing.BookId);
+            //Borrowing check = context.Borrowings.FirstOrDefault(x => x.MemberId == borrowing.MemberId
+            //                                                    && x.BookId == borrowing.BookId);
 
-            if (check != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //if (check != null)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             //TODO CHECK FOR A BORROWING THAT HAS ALREADY BEEN ADDED
 

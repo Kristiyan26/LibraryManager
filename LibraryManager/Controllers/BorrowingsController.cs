@@ -32,7 +32,7 @@ namespace LibraryManager.Controllers
 
             context.SaveChanges();
 
-            return RedirectToAction("Index"," Borrowings");
+            return RedirectToAction("Index","Borrowings");
         }
     }
 }

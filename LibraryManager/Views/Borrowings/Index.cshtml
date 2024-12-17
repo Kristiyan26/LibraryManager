@@ -25,10 +25,13 @@
                 <h3>@borrowing.ReturnOn </h3>
             </div>
         }
-        <div class="col-2">
+        else
+        {
+            <div class="col-3">
             <a asp-controller="Borrowings" asp-action="ReturnBorrowedBook" asp-route-id="@borrowing.BorrowingId">Return to library</a>
-
-        </div>
+            </div>
+        }
+      
     </div>
 
 }
