@@ -38,14 +38,16 @@ namespace LibraryManager.Repositories
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasData(
-       new Author { AuthorId = 1, Name = "J.K. Rowling" },
-       new Author { AuthorId = 2, Name = "George R.R. Martin" }
+                new Author { AuthorId = 1, Name = "J.K. Rowling" },
+                new Author { AuthorId = 2, Name = "George R.R. Martin" },
+                new Author { AuthorId = 3, Name = "J.R.R. Tolkien" }
             );
 
      
             modelBuilder.Entity<Book>().HasData(
                 new Book { BookId = 1, Title = "Harry Potter and the Philosopher's Stone", GenreId = 1 },
-                new Book { BookId = 2, Title = "A Game of Thrones", GenreId = 2 }
+                new Book { BookId = 2, Title = "A Game of Thrones", GenreId = 2 },
+                new Book { BookId = 3, Title = "The Hobbit", GenreId = 1 }
             );
 
       
@@ -57,8 +59,11 @@ namespace LibraryManager.Repositories
      
             modelBuilder.Entity<BookAuthor>().HasData(
                 new BookAuthor { BookId = 1, AuthorId = 1 }, // Harry Potter by J.K. Rowling
-                new BookAuthor { BookId = 2, AuthorId = 2 }  // Game of Thrones by George R.R. Martin
+                new BookAuthor { BookId = 2, AuthorId = 2 },  // Game of Thrones by George R.R. Martin
+                new BookAuthor { BookId = 3, AuthorId = 3 }
+
             );
+
 
          
             modelBuilder.Entity<Member>().HasData(
@@ -69,7 +74,16 @@ namespace LibraryManager.Repositories
                     Password = "0000",
                     FirstName = "Kristiyan",
                     LastName = "Lyubenov"
-                });
+                },
+                new Member 
+                { 
+                    MemberId = 2,
+                    Username="SimonG",
+                    Password="0000",
+                    FirstName="Stoyan",
+                    LastName="Kolev"
+                }
+                );
 
             modelBuilder.Entity<Borrowing>().HasData(
                 new Borrowing

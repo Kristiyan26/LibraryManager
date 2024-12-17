@@ -133,7 +133,8 @@ namespace LibraryManager.Migrations
                 values: new object[,]
                 {
                     { 1, "J.K. Rowling" },
-                    { 2, "George R.R. Martin" }
+                    { 2, "George R.R. Martin" },
+                    { 3, "J.R.R. Tolkien" }
                 });
 
             migrationBuilder.InsertData(
@@ -148,7 +149,11 @@ namespace LibraryManager.Migrations
             migrationBuilder.InsertData(
                 table: "Members",
                 columns: new[] { "MemberId", "FirstName", "LastName", "Password", "Username" },
-                values: new object[] { 1, "Kristiyan", "Lyubenov", "0000", "MladMilioner" });
+                values: new object[,]
+                {
+                    { 1, "Kristiyan", "Lyubenov", "0000", "MladMilioner" },
+                    { 2, "Stoyan", "Kolev", "0000", "SimonG" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Books",
@@ -156,7 +161,8 @@ namespace LibraryManager.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "Harry Potter and the Philosopher's Stone" },
-                    { 2, 2, "A Game of Thrones" }
+                    { 2, 2, "A Game of Thrones" },
+                    { 3, 1, "The Hobbit" }
                 });
 
             migrationBuilder.InsertData(
@@ -165,13 +171,14 @@ namespace LibraryManager.Migrations
                 values: new object[,]
                 {
                     { 1, 1 },
-                    { 2, 2 }
+                    { 2, 2 },
+                    { 3, 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Borrowings",
                 columns: new[] { "BorrowingId", "BookId", "BorrowedOn", "MemberId", "ReturnOn" },
-                values: new object[] { 1, 2, new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Local), 1, null });
+                values: new object[] { 1, 2, new DateTime(2024, 12, 18, 0, 0, 0, 0, DateTimeKind.Local), 1, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookAuthors_AuthorId",

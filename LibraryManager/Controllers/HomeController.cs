@@ -68,5 +68,49 @@ namespace LibraryManager.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        [AuthenticationFilter]
+   
+        public IActionResult Borrow(int id)
+        {
+            LibraryManagerDbContext context = new LibraryManagerDbContext();
+
+            Book book = context.Books.FirstOrDefault(b=>b.BookId == id);
+
+            if(book == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
+
+            Member member = this.HttpContext.Session.GetObject<Member>("loggedMember");
+
+           
+
+            Borrowing borrowing = new Borrowing();
+
+            borrowing.MemberId = member.MemberId;
+            borrowing.BookId = book.BookId;  
+            borrowing.BorrowedOn= DateTime.Now;
+
+            Borrowing check = context.Borrowings.FirstOrDefault(x => x.MemberId == borrowing.MemberId
+                                                                && x.BookId == borrowing.BookId);
+
+            if (check != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            //TODO CHECK FOR A BORROWING THAT HAS ALREADY BEEN ADDED
+
+
+
+            context.Borrowings.Add(borrowing);
+            context.SaveChanges();
+
+            return RedirectToAction("Index", "Borrowings");
+
+
+        }
     }
 }

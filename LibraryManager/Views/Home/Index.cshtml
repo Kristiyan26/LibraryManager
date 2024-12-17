@@ -21,6 +21,9 @@
             <label>Author: </label>
             @string.Join(" ",Model.BookAuthors.Where(x=>x.BookId==book.BookId).Select(x=>x.Author.Name).ToList()) 
         </div>
+        <div class="col-2">
+          <a asp-controller="Home" asp-action="Borrow" asp-route-id="@book.BookId">Borrow</a>
+        </div>
                                          
     </div>
 

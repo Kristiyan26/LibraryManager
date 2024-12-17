@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManager.Migrations
 {
     [DbContext(typeof(LibraryManagerDbContext))]
-    [Migration("20241215150834_InitialMigration")]
+    [Migration("20241217225200_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -54,6 +54,11 @@ namespace LibraryManager.Migrations
                         {
                             AuthorId = 2,
                             Name = "George R.R. Martin"
+                        },
+                        new
+                        {
+                            AuthorId = 3,
+                            Name = "J.R.R. Tolkien"
                         });
                 });
 
@@ -90,6 +95,12 @@ namespace LibraryManager.Migrations
                             BookId = 2,
                             GenreId = 2,
                             Title = "A Game of Thrones"
+                        },
+                        new
+                        {
+                            BookId = 3,
+                            GenreId = 1,
+                            Title = "The Hobbit"
                         });
                 });
 
@@ -117,6 +128,11 @@ namespace LibraryManager.Migrations
                         {
                             BookId = 2,
                             AuthorId = 2
+                        },
+                        new
+                        {
+                            BookId = 3,
+                            AuthorId = 3
                         });
                 });
 
@@ -153,7 +169,7 @@ namespace LibraryManager.Migrations
                         {
                             BorrowingId = 1,
                             BookId = 2,
-                            BorrowedOn = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Local),
+                            BorrowedOn = new DateTime(2024, 12, 18, 0, 0, 0, 0, DateTimeKind.Local),
                             MemberId = 1
                         });
                 });
@@ -223,6 +239,14 @@ namespace LibraryManager.Migrations
                             LastName = "Lyubenov",
                             Password = "0000",
                             Username = "MladMilioner"
+                        },
+                        new
+                        {
+                            MemberId = 2,
+                            FirstName = "Stoyan",
+                            LastName = "Kolev",
+                            Password = "0000",
+                            Username = "SimonG"
                         });
                 });
 
