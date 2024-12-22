@@ -109,5 +109,47 @@ namespace LibraryManager.Controllers
             return RedirectToAction("Index", "Borrowings");
 
         }
+
+
+        [HttpGet]
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public IActionResult SignUp(SignUpVM model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return View(model);
+            }
+            LibraryManagerDbContext context = new LibraryManagerDbContext();
+
+
+            Member check = context.Members.FirstOrDefault(x => x.Username == model.Username);
+
+            if (check != null)
+            {
+                this.ModelState.AddModelError("authError", "Username is already taken!");
+                return View(model);
+
+            }
+            else
+            {
+                Member newMember = new Member();
+                newMember.Username = model.Username;
+                newMember.Password = model.Password;
+                newMember.FirstName= model.FirstName;   
+                newMember.LastName= model.LastName;
+
+                context.Members.Add(newMember);
+                context.SaveChanges();
+                this.HttpContext.Session.SetObject<Member>("loggedMember", newMember);
+            }
+            return RedirectToAction("Index", "Home");
+
+        }
     }
 }
