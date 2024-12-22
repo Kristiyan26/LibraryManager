@@ -96,7 +96,10 @@ namespace LibraryManager.Controllers
             Borrowing check = context.Borrowings.FirstOrDefault(x => x.MemberId == borrowing.MemberId
                                                                 && x.BookId == borrowing.BookId);
 
-         
+            if (check != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
 
 
