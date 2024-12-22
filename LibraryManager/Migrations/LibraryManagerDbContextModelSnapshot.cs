@@ -166,7 +166,7 @@ namespace LibraryManager.Migrations
                         {
                             BorrowingId = 1,
                             BookId = 2,
-                            BorrowedOn = new DateTime(2024, 12, 18, 0, 0, 0, 0, DateTimeKind.Local),
+                            BorrowedOn = new DateTime(2024, 12, 22, 0, 0, 0, 0, DateTimeKind.Local),
                             MemberId = 1
                         });
                 });
