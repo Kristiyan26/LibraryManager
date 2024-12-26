@@ -1,45 +1,63 @@
 ﻿@using LibraryManager.Entities;
 @using LibraryManager.ExtentionMethods;
 @{
-    Member loggedMember = this.ViewContext.HttpContext.Session.GetObject<Member>("loggedMember");
+	Member loggedMember = this.ViewContext.HttpContext.Session.GetObject<Member>("loggedMember");
+	Member loggedAdmin = this.ViewContext.HttpContext.Session.GetObject<Member>("loggedAdmin");
 }
 
 
 <html>
 <head>
-    <title>@ViewData["title"]</title>
-    <link href="~/css/site.css" rel="stylesheet" />
+	<title>@ViewData["title"]</title>
+	<link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container header">
-        <h1 class="title">Library</h1>
-        <div class="welcomeMsg">
-       
-            <span>Hello,
-                @(loggedMember == null ? "Guest" : loggedMember.Username)
-            </span>
-               
-        </div>
-    </div>
-    <div class="container">
-        <ul class="menu">
-            <li><a href="/Home/Index">Home</a></li>
+	<div class="container header">
+		<h1 class="title">Library</h1>
+		<div class="welcomeMsg">
 
-            @if (loggedMember == null)
-            {
-                <li><a href="/Home/Login">Login</a></li>
-            }
-            else
-            {
-                <li><a href="/Borrowings/Index">My Borrowings</a></li>
-                <li><a href="/Home/Logout">Logout</a></li>
-            }
+			<span>
+				Hello,
+				@(loggedMember == null ? "Guest" : loggedMember.Username)
 
-      
-        </ul>
-    </div>
-    <div class="container">
-        @RenderBody()
-    </div>
+			</span>
+
+		</div>
+	</div>
+	<div class="container">
+		<ul class="menu">
+			
+
+			@{
+				if (loggedMember == null && loggedAdmin == null)
+				{
+					<li><a href="/Home/Index">Home</a></li>
+					<li><a href="/Home/Login">Login</a></li>
+				}
+
+				if (loggedMember != null)
+				{
+					<li><a href="/Home/Index">Home</a></li>
+					<li><a href="/Borrowings/Index">My Borrowings</a></li>
+					<li><a href="/Home/Logout">Logout</a></li>
+
+				}
+
+				else if (loggedAdmin != null)
+				{
+					<li><a href="/Admin/Books">Books</a></li>
+					<li><a href="/Admin/Members">Members</a></li>
+					<li><a href="/Home/Logout">Exit</a></li>
+				}
+
+			}
+
+
+
+		</ul>
+	</div>
+	<div class="container">
+		@RenderBody()
+	</div>
 </body>
 </html>

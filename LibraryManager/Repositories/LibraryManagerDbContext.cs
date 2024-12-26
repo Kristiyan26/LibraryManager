@@ -67,21 +67,34 @@ namespace LibraryManager.Repositories
 
          
             modelBuilder.Entity<Member>().HasData(
+                 new Member
+                 {
+                     MemberId = 1,
+                     Username = "Admin",
+                     Password = "0000",
+                     FirstName = "Admin",
+                     LastName = "Adminov",
+                     Role="Admin"
+
+                 },
                 new Member
                 {
-                    MemberId = 1,
+                    MemberId = 2,
                     Username = "MladMilioner",
                     Password = "0000",
                     FirstName = "Kristiyan",
-                    LastName = "Lyubenov"
+                    LastName = "Lyubenov",
+                    Role="Member"
+                    
                 },
                 new Member 
                 { 
-                    MemberId = 2,
+                    MemberId = 3,
                     Username="SimonG",
                     Password="0000",
                     FirstName="Stoyan",
-                    LastName="Kolev"
+                    LastName="Kolev",
+                    Role = "Member"
                 }
                 );
 
@@ -89,9 +102,9 @@ namespace LibraryManager.Repositories
                 new Borrowing
                 {
                     BorrowingId = 1,
-                    MemberId = 1,
+                    MemberId = 2,
                     BookId = 2,
-                    BorrowedOn = DateTime.Today
+                    BorrowedOn = new DateTime(2024, 12, 26)
                 });
 
         }

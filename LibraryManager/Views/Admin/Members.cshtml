@@ -1,0 +1,20 @@
+﻿@model LibraryManager.ViewModels.Admin.MembersVM;
+@using LibraryManager.Entities
+
+
+@{
+	Layout = "/Views/Shared/_Site.cshtml";
+	ViewData["Title"] = "List of Members";
+}
+
+
+@foreach (Member member in Model.Members)
+{
+	<br />
+	<div class="row">
+		<div class="col-3"><h3>@member.Username</h3></div>
+		<div class="col-3">@member.FirstName</div>
+		<div class="col-3">@member.LastName</div>
+	</div>
+
+}

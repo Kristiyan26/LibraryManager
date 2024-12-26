@@ -43,29 +43,43 @@ namespace LibraryManager.Controllers
             LibraryManagerDbContext context = new LibraryManagerDbContext();
 
 
-            Member loggedMember = context.Members.FirstOrDefault(x => x.Username == model.Username &&
+            Member loggedUser = context.Members.FirstOrDefault(x => x.Username == model.Username &&
                                                                  x.Password == model.Password);
 
-            if(loggedMember == null)
+            if(loggedUser == null)
             {
                 this.ModelState.AddModelError("authError", "Invalid username or password!");
                 return View(model);
 
             }
-            else
+
+            if(loggedUser.Role=="Admin")
             {
-                this.HttpContext.Session.SetObject<Member>("loggedMember", loggedMember);
-            }
-            return RedirectToAction("Index", "Home");
+                this.HttpContext.Session.SetObject<Member>("loggedAdmin", loggedUser);
+				return RedirectToAction("Books", "Admin");
+			}
+            else 
+            {
+                this.HttpContext.Session.SetObject<Member>("loggedMember", loggedUser);
+				return RedirectToAction("Index", "Home");
+
+			}
+      
         }
 
-
-        [AuthenticationFilter]
         [HttpGet]
         public IActionResult Logout()
         {
-            this.HttpContext.Session.SetObject<Member>("loggedMember",null);
-            return RedirectToAction("Index", "Home");
+            if(this.HttpContext.Session.GetObject<Member>("loggedMember") != null)
+            {
+                this.HttpContext.Session.SetObject<Member>("loggedMember", null);
+            }
+			if (this.HttpContext.Session.GetObject<Member>("loggedAdmin") != null)
+			{
+				this.HttpContext.Session.SetObject<Member>("loggedAdmin", null);
+			}
+
+			return RedirectToAction("Index", "Home");
         }
 
 

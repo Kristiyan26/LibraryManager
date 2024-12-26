@@ -166,8 +166,8 @@ namespace LibraryManager.Migrations
                         {
                             BorrowingId = 1,
                             BookId = 2,
-                            BorrowedOn = new DateTime(2024, 12, 22, 0, 0, 0, 0, DateTimeKind.Local),
-                            MemberId = 1
+                            BorrowedOn = new DateTime(2024, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MemberId = 2
                         });
                 });
 
@@ -220,6 +220,10 @@ namespace LibraryManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -232,17 +236,28 @@ namespace LibraryManager.Migrations
                         new
                         {
                             MemberId = 1,
-                            FirstName = "Kristiyan",
-                            LastName = "Lyubenov",
+                            FirstName = "Admin",
+                            LastName = "Adminov",
                             Password = "0000",
-                            Username = "MladMilioner"
+                            Role = "Admin",
+                            Username = "Admin"
                         },
                         new
                         {
                             MemberId = 2,
+                            FirstName = "Kristiyan",
+                            LastName = "Lyubenov",
+                            Password = "0000",
+                            Role = "Member",
+                            Username = "MladMilioner"
+                        },
+                        new
+                        {
+                            MemberId = 3,
                             FirstName = "Stoyan",
                             LastName = "Kolev",
                             Password = "0000",
+                            Role = "Member",
                             Username = "SimonG"
                         });
                 });
