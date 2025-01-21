@@ -2,7 +2,7 @@
 
 @{
     Layout = "/Views/Shared/_Site.cshtml";
-   ViewData["Title"] = "Add Book";
+    ViewData["Title"] = "Add Book";
 }
 
 <h2>Add Book</h2>
@@ -13,7 +13,7 @@
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
     </div>
-    <div class="form-group">
+    <div class="form-group" id="existing-genre-section">
         <label asp-for="Genre.GenreId">Genre</label>
         <select asp-for="Genre.GenreId" class="form-control">
             @foreach (var genre in Model.Genres)
@@ -21,6 +21,14 @@
                 <option value="@genre.GenreId">@genre.Name</option>
             }
         </select>
+    </div>
+    <div class="form-group" id="new-genre-section" style="display: none;">
+        <label for="NewGenre">New Genre</label>
+        <input type="text" id="NewGenre" name="NewGenre" class="form-control" placeholder="Enter new genre name" />
+        <button type="button" id="cancel-add-new-genre">Cancel</button>
+    </div>
+    <div class="form-group">
+        <a id="add-new-genre-link" style="color: blue; cursor: pointer;">Add a new Genre</a>
     </div>
     <div class="form-group" id="existing-author-section">
         <label asp-for="Author.AuthorId">Author</label>
@@ -37,9 +45,9 @@
         <input type="text" id="NewAuthor" name="NewAuthor" class="form-control" placeholder="Enter new author name" />
         <button type="button" id="cancel-add-new-author">Cancel</button>
     </div>
-   <div class="form-group">
+    <div class="form-group">
         <a id="add-new-author-link" style="color: blue; cursor: pointer;">Add a new Author</a>
-   </div>
+    </div>
     <button type="submit" class="btn btn-primary">Add Book</button>
 }
 
@@ -49,17 +57,28 @@
 
 @section Scripts {
     <script>
+        document.getElementById('cancel-add-new-genre').addEventListener('click',function(){
+            document.getElementById('existing-genre-section').style.display='block';
+            document.getElementById('new-genre-section').style.display = 'none';
+            document.getElementById('add-new-genre-link').style.display = 'inline';
+        });
+
+        document.getElementById('add-new-genre-link').addEventListener('click', function() {
+            document.getElementById('existing-genre-section').style.display = 'none';
+            document.getElementById('new-genre-section').style.display = 'block';
+            document.getElementById('add-new-genre-link').style.display ='none';
+        });
+
         document.getElementById('cancel-add-new-author').addEventListener('click',function(){
             document.getElementById('existing-author-section').style.display='block';
-               document.getElementById('new-author-section').style.display = 'none';
-               document.getElementById('add-new-author-link').style.display = 'inline';
-
+            document.getElementById('new-author-section').style.display = 'none';
+            document.getElementById('add-new-author-link').style.display = 'inline';
         });
+
         document.getElementById('add-new-author-link').addEventListener('click', function() {
             document.getElementById('existing-author-section').style.display = 'none';
             document.getElementById('new-author-section').style.display = 'block';
             document.getElementById('add-new-author-link').style.display ='none';
-      
         });
     </script>
 }
