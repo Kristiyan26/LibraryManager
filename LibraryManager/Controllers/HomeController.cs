@@ -60,6 +60,8 @@ namespace LibraryManager.Controllers
 			}
             else 
             {
+              
+
                 this.HttpContext.Session.SetObject<Member>("loggedMember", loggedUser);
 				return RedirectToAction("Index", "Home");
 

@@ -32,6 +32,17 @@ namespace LibraryManager.Controllers
 			return View(model);
 		}
 
+        [HttpGet]
+        public IActionResult AddBook()
+        {
+            AddBookVM model= new AddBookVM();
+            LibraryManagerDbContext context = new LibraryManagerDbContext();
+
+            model.Authors=context.Authors.ToList();
+            model.Genres=context.Genres.ToList();
+
+            return View(model);
+        }
    
     }
 }

@@ -6,6 +6,9 @@
     ViewData["Title"] = "Home Page ";
 }
 
+<h2>
+    <button> <a asp-controller="Admin" asp-action="AddBook">Add Book</a> </button>
+</h2>
 @foreach (Book book in Model.Books)
 {
     <br />
