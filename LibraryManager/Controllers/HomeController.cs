@@ -109,10 +109,10 @@ namespace LibraryManager.Controllers
             borrowing.BookId = book.BookId;  
             borrowing.BorrowedOn= DateTime.Now;
 
-            Borrowing check = context.Borrowings.FirstOrDefault(x => x.MemberId == borrowing.MemberId
+            Borrowing check = context.Borrowings.OrderByDescending(x=>x.BorrowedOn).FirstOrDefault(x => x.MemberId == borrowing.MemberId
                                                                 && x.BookId == borrowing.BookId);
 
-            if (check != null)
+            if (check!=null && check.ReturnOn == null)
             {
                 return RedirectToAction("Index", "Home");
             }
