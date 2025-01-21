@@ -10,7 +10,7 @@ namespace LibraryManager.ViewModels.Admin
 
         public Genre Genre {  get; set; }   
 
-        public List<Genre> Genres { get; set; }
-        public List<Author> Authors { get; set; }
+        public List<Genre> Genres { get; set; } //for the view page
+        public List<Author> Authors { get; set; } // for the view page
     }
 }
