@@ -17,9 +17,14 @@
     <div class="container my-4">
         <h1 class="display-4">Library</h1>
         <div class="alert alert-info">
-            <span>
-                Hello, @(loggedMember == null ? "Guest" : loggedMember.Username)
-            </span>
+                @{
+                    if(loggedAdmin !=null){
+                    <span>Admin</span>
+                    }
+                    else{
+                        <span>Hello, @(loggedMember == null ? "Guest" : loggedMember.Username)</span>
+                    }
+                }
         </div>
     </div>
     <div class="container">
