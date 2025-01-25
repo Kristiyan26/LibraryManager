@@ -2,11 +2,8 @@
 
 namespace LibraryManager.Entities
 {
-    public class Genre
+    public class Genre : BaseEntity
     {
-
-        [Key]
-        public int GenreId { get; set; }
 
         public string Name { get; set; }    
 

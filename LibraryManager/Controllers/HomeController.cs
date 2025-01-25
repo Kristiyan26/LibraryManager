@@ -13,13 +13,14 @@ namespace LibraryManager.Controllers
 
         public IActionResult Index()
         {
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+            BooksRepository booksRepository = new BooksRepository();
+            BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
 
             IndexVM model = new IndexVM();
 
-            model.Books = context.Books.ToList();
+            model.Books = booksRepository.GetAll();
 
-            model.BookAuthors=context.BookAuthors.ToList(); 
+            model.BookAuthors= bookAuthorsRepository.GetAll(); 
 
             return View(model);
         }
@@ -35,34 +36,35 @@ namespace LibraryManager.Controllers
 
         public IActionResult Login(LoginVM model)
         {
+            MembersRepository membersRepository = new MembersRepository();
+
             if (!this.ModelState.IsValid)
             {
                 return View(model);
             }
-            
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+          
 
 
-            Member loggedUser = context.Members.FirstOrDefault(x => x.Username == model.Username &&
+            Member loggedMember = membersRepository.GetFirstOrDefault(x => x.Username == model.Username &&
                                                                  x.Password == model.Password);
 
-            if(loggedUser == null)
+            if(loggedMember == null)
             {
                 this.ModelState.AddModelError("authError", "Invalid username or password!");
                 return View(model);
 
             }
 
-            if(loggedUser.Role=="Admin")
+            if(loggedMember.Role=="Admin")
             {
-                this.HttpContext.Session.SetObject<Member>("loggedAdmin", loggedUser);
+                this.HttpContext.Session.SetObject<Member>("loggedAdmin", loggedMember);
 				return RedirectToAction("Books", "Admin");
 			}
             else 
             {
               
 
-                this.HttpContext.Session.SetObject<Member>("loggedMember", loggedUser);
+                this.HttpContext.Session.SetObject<Member>("loggedMember", loggedMember);
 				return RedirectToAction("Index", "Home");
 
 			}
@@ -89,11 +91,12 @@ namespace LibraryManager.Controllers
    
         public IActionResult Borrow(int id)
         {
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+            BooksRepository booksRepository = new BooksRepository();
+            BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
 
-            Book book = context.Books.FirstOrDefault(b=>b.BookId == id);
+            Book book = booksRepository.GetFirstOrDefault(b=>b.Id == id);
 
-            if(book == null)
+            if(book == null && book.OnStock>0)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -105,23 +108,30 @@ namespace LibraryManager.Controllers
 
             Borrowing borrowing = new Borrowing();
 
-            borrowing.MemberId = member.MemberId;
-            borrowing.BookId = book.BookId;  
+            borrowing.MemberId = member.Id;
+            borrowing.BookId = book.Id;  
             borrowing.BorrowedOn= DateTime.Now;
 
-            Borrowing check = context.Borrowings.OrderByDescending(x=>x.BorrowedOn).FirstOrDefault(x => x.MemberId == borrowing.MemberId
-                                                                && x.BookId == borrowing.BookId);
+            Borrowing check = borrowingsRepository.GetFirstOrDefault(x => x.MemberId == borrowing.MemberId
+                                                                && x.BookId == borrowing.BookId 
+                                                                && x.ReturnOn==null);
+
+
+            //old one Borrowing check =
+            //context.Borrowings.OrderByDescending(x=>x.BorrowedOn).
+            //FirstOrDefault(x => x.MemberId == borrowing.MemberId
+            //&& x.BookId == borrowing.BookId);
 
             if (check!=null && check.ReturnOn == null)
             {
                 return RedirectToAction("Index", "Home");
             }
 
+            book.OnStock--;
+            booksRepository.Save(book);
 
-
-            context.Borrowings.Add(borrowing);
-            context.SaveChanges();
-
+            borrowingsRepository.Save(borrowing);
+  
             return RedirectToAction("Index", "Borrowings");
 
         }
@@ -137,14 +147,14 @@ namespace LibraryManager.Controllers
         [HttpPost]
         public IActionResult SignUp(SignUpVM model)
         {
+           MembersRepository membersRepository = new MembersRepository();
             if (!this.ModelState.IsValid)
             {
                 return View(model);
             }
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
 
 
-            Member check = context.Members.FirstOrDefault(x => x.Username == model.Username);
+            Member check = membersRepository.GetFirstOrDefault(x => x.Username == model.Username);
 
             if (check != null)
             {
@@ -160,8 +170,7 @@ namespace LibraryManager.Controllers
                 newMember.FirstName= model.FirstName;   
                 newMember.LastName= model.LastName;
 
-                context.Members.Add(newMember);
-                context.SaveChanges();
+                membersRepository.Save(newMember);
                 this.HttpContext.Session.SetObject<Member>("loggedMember", newMember);
             }
             return RedirectToAction("Index", "Home");

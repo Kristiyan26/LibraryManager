@@ -27,54 +27,61 @@ namespace LibraryManager.Migrations
 
             modelBuilder.Entity("LibraryManager.Entities.Author", b =>
                 {
-                    b.Property<int>("AuthorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AuthorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Authors");
 
                     b.HasData(
                         new
                         {
-                            AuthorId = 1,
+                            Id = 1,
                             Name = "J.K. Rowling"
                         },
                         new
                         {
-                            AuthorId = 2,
+                            Id = 2,
                             Name = "George R.R. Martin"
                         },
                         new
                         {
-                            AuthorId = 3,
+                            Id = 3,
                             Name = "J.R.R. Tolkien"
                         });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.Book", b =>
                 {
-                    b.Property<int>("BookId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("GenreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OnStock")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BookId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GenreId");
 
@@ -83,63 +90,80 @@ namespace LibraryManager.Migrations
                     b.HasData(
                         new
                         {
-                            BookId = 1,
+                            Id = 1,
                             GenreId = 1,
+                            ImageUrl = "~/images/HarryPotterAndThePhilosopher'sStoneBookCover.jpg",
+                            OnStock = 2,
                             Title = "Harry Potter and the Philosopher's Stone"
                         },
                         new
                         {
-                            BookId = 2,
+                            Id = 2,
                             GenreId = 2,
+                            ImageUrl = "~/images/AGameOfThronesBookCover.jpg",
+                            OnStock = 0,
                             Title = "A Game of Thrones"
                         },
                         new
                         {
-                            BookId = 3,
+                            Id = 3,
                             GenreId = 1,
+                            ImageUrl = "~/images/TheHobbitBookCover.jpg",
+                            OnStock = 3,
                             Title = "The Hobbit"
                         });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.BookAuthor", b =>
                 {
-                    b.Property<int>("BookId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.HasKey("BookId", "AuthorId");
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("BookAuthors");
 
                     b.HasData(
                         new
                         {
-                            BookId = 1,
-                            AuthorId = 1
+                            Id = 1,
+                            AuthorId = 1,
+                            BookId = 1
                         },
                         new
                         {
-                            BookId = 2,
-                            AuthorId = 2
+                            Id = 2,
+                            AuthorId = 2,
+                            BookId = 2
                         },
                         new
                         {
-                            BookId = 3,
-                            AuthorId = 3
+                            Id = 3,
+                            AuthorId = 3,
+                            BookId = 3
                         });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.Borrowing", b =>
                 {
-                    b.Property<int>("BorrowingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowingId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
@@ -153,7 +177,7 @@ namespace LibraryManager.Migrations
                     b.Property<DateTime?>("ReturnOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("BorrowingId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BookId");
 
@@ -164,7 +188,7 @@ namespace LibraryManager.Migrations
                     b.HasData(
                         new
                         {
-                            BorrowingId = 1,
+                            Id = 1,
                             BookId = 2,
                             BorrowedOn = new DateTime(2024, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MemberId = 2
@@ -173,40 +197,40 @@ namespace LibraryManager.Migrations
 
             modelBuilder.Entity("LibraryManager.Entities.Genre", b =>
                 {
-                    b.Property<int>("GenreId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GenreId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GenreId");
+                    b.HasKey("Id");
 
                     b.ToTable("Genres");
 
                     b.HasData(
                         new
                         {
-                            GenreId = 1,
+                            Id = 1,
                             Name = "Fantasy"
                         },
                         new
                         {
-                            GenreId = 2,
+                            Id = 2,
                             Name = "Epic Fantasy"
                         });
                 });
 
             modelBuilder.Entity("LibraryManager.Entities.Member", b =>
                 {
-                    b.Property<int>("MemberId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MemberId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -228,14 +252,14 @@ namespace LibraryManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("MemberId");
+                    b.HasKey("Id");
 
                     b.ToTable("Members");
 
                     b.HasData(
                         new
                         {
-                            MemberId = 1,
+                            Id = 1,
                             FirstName = "Admin",
                             LastName = "Adminov",
                             Password = "0000",
@@ -244,7 +268,7 @@ namespace LibraryManager.Migrations
                         },
                         new
                         {
-                            MemberId = 2,
+                            Id = 2,
                             FirstName = "Kristiyan",
                             LastName = "Lyubenov",
                             Password = "0000",
@@ -253,7 +277,7 @@ namespace LibraryManager.Migrations
                         },
                         new
                         {
-                            MemberId = 3,
+                            Id = 3,
                             FirstName = "Stoyan",
                             LastName = "Kolev",
                             Password = "0000",

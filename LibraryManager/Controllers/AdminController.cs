@@ -14,22 +14,21 @@ namespace LibraryManager.Controllers
     {
         public IActionResult Members()
         {
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+            MembersRepository membersRepository = new MembersRepository();
 
             MembersVM model = new MembersVM();
 
-            model.Members = context.Members.Where(m => m.Role == "Member").ToList();
+            model.Members = membersRepository.GetAll(m => m.Role == "Member");
 
             return View(model);
         }
         public IActionResult Books()
         {
-
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+            BooksRepository booksRepository = new BooksRepository();    
 
             BooksVM model = new BooksVM();
 
-            model.Books = context.Books.ToList();
+            model.Books = booksRepository.GetAll();
 
             return View(model);
         }
@@ -38,10 +37,12 @@ namespace LibraryManager.Controllers
         public IActionResult AddBook()
         {
             AddBookVM model = new AddBookVM();
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
 
-            model.Authors = context.Authors.ToList();
-            model.Genres = context.Genres.ToList();
+            AuthorsRepository authorsRepository = new AuthorsRepository();
+            GenresRepository genresRepository = new GenresRepository(); 
+
+            model.Authors = authorsRepository.GetAll();
+            model.Genres = genresRepository.GetAll();
 
             return View(model);
         }
@@ -49,13 +50,21 @@ namespace LibraryManager.Controllers
         [HttpPost]
         public IActionResult AddBook(AddBookVM model)
         {
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+
+            List<Author> selected = model.SelectedAuthors;
+
+            GenresRepository genresRepository = new GenresRepository();
+            AuthorsRepository authorsRepository = new AuthorsRepository();
+            BooksRepository booksRepository = new BooksRepository();  
+            BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
+
+
             Genre genre = null;
             Author author = null;
 
-            if (model.Genre.GenreId != 0)
+            if (model.Genre.Id != 0)
             {
-                genre = context.Genres.FirstOrDefault(g => g.GenreId == model.Genre.GenreId);
+                genre = genresRepository.GetFirstOrDefault(g => g.Id == model.Genre.Id);
             }
             else
             {
@@ -63,38 +72,38 @@ namespace LibraryManager.Controllers
 
                 genre.Name = model.Genre.Name;
 
-                context.Genres.Add(genre);
-                context.SaveChanges();
-
+                genresRepository.Save(genre);
 
             }
 
-            if (model.Author.AuthorId != 0)
+            foreach(Author selectedAuthor in model.SelectedAuthors)
             {
-                author = context.Authors.FirstOrDefault(a => a.AuthorId == model.Author.AuthorId);
+                if (selectedAuthor.Id != 0)
+                {
+                    author = authorsRepository.GetFirstOrDefault(a => a.Id == selectedAuthor.Id);
+                }
+                else if(String.IsNullOrEmpty(selectedAuthor.Name))
+                {
+                    author = new Author();
+                    author.Name = selectedAuthor.Name;
 
-
+                    authorsRepository.Save(author);
+                }
             }
-            else
-            {
-                author = new Author();
-                author.Name = model.Author.Name;
 
-                context.Authors.Add(author);
-                context.SaveChanges();
-            }
+          
 
             Book book = new Book();
             book.Title = model.Title;
-            book.GenreId = genre.GenreId;
-            context.Books.Add(book);
-            context.SaveChanges();
+            book.GenreId= model.Genre.Id;
+            book.OnStock = model.Quantity;
+            book.ImageUrl =$"~/images/{model.ImageUrl}";
+            booksRepository.Save(book);
 
             BookAuthor bookAuthor = new BookAuthor();
-            bookAuthor.AuthorId = author.AuthorId;
-            bookAuthor.BookId = book.BookId;
-            context.BookAuthors.Add(bookAuthor);
-            context.SaveChanges();
+            bookAuthor.AuthorId = author.Id;
+            bookAuthor.BookId = book.Id;
+            bookAuthorsRepository.Save(bookAuthor);
 
 
             return RedirectToAction("Books", "Admin");

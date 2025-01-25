@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace LibraryManager.Entities
 {
 
-    [PrimaryKey(nameof(BookId), nameof(AuthorId))]
-    public class BookAuthor
+
+    public class BookAuthor : BaseEntity
     {
 
       //  first part of the composite key

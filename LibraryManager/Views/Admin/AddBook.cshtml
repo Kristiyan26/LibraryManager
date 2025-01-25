@@ -1,85 +1,162 @@
 ﻿@model LibraryManager.ViewModels.Admin.AddBookVM
 
-
 @{
-    Layout = "/Views/Shared/_Site.cshtml";
-    ViewData["Title"] = "Add Book";
+	Layout = "/Views/Shared/_Site.cshtml";
+	ViewData["Title"] = "Add Book";
 }
 
 <h2>Add Book</h2>
 
 <form asp-action="AddBook" asp-controller="Admin" method="post">
-    <div class="form-group">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" class="form-control" />
-    </div>
-    <div class="form-group" id="existing-genre-section">
-        <label asp-for="Genre.GenreId">Genre</label>
-        <select asp-for="Genre.GenreId" class="form-control">
-            <option value="">Select an existing genre</option>
-            @foreach (Genre genre in Model.Genres)
-            {
-                <option value="@genre.GenreId">@genre.Name</option>
-            }
-        </select>
-    </div>
-    <div class="form-group" id="new-genre-section" style="display: none;">
-        <label for="NewGenre">New Genre</label>
-        <input asp-for="Genre.Name" type="text" id="NewGenre" class="form-control" placeholder="Enter new genre name" />
-        <button type="button" id="cancel-add-new-genre">Cancel</button>
-    </div>
-    <div class="form-group">
-        <a id="add-new-genre-link" style="color: blue; cursor: pointer;">Add a new Genre</a>
-    </div>
-    <div class="form-group" id="existing-author-section">
-        <label asp-for="Author.AuthorId">Author</label>
-        <select asp-for="Author.AuthorId" class="form-control">
-            <option value="">Select an existing author</option>
-            @foreach (var author in Model.Authors)
-            {
-                <option value="@author.AuthorId">@author.Name</option>
-            }
-        </select>
-    </div>
-    <div class="form-group" id="new-author-section" style="display: none;">
-        <label for="NewAuthor">New Author</label>
-        <input asp-for="Author.Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
-        <button type="button" id="cancel-add-new-author">Cancel</button>
-    </div>
-    <div class="form-group">
-        <a id="add-new-author-link" style="color: blue; cursor: pointer;">Add a new Author</a>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Book</button>
+	<div class="form-group">
+		<label asp-for="Title"></label>
+		<input asp-for="Title" class="form-control" />
+	</div>
+	<div class="form-group" id="existing-genre-section">
+		<label asp-for="Genre.Id">Genre</label>
+		<select asp-for="Genre.Id" class="form-control">
+			<option value="">Select an existing genre</option>
+			@foreach (Genre genre in Model.Genres)
+			{
+				<option value="@genre.Id">@genre.Name</option>
+			}
+		</select>
+	</div>
+	<div class="form-group" id="new-genre-section" style="display: none;">
+		<label for="NewGenre">New Genre</label>
+		<input asp-for="Genre.Name" type="text" id="NewGenre" class="form-control" placeholder="Enter new genre name" />
+		<button type="button" id="cancel-add-new-genre">Cancel</button>
+	</div>
+	<div class="form-group">
+		<a id="add-new-genre-link" style="color: blue; cursor: pointer;">Add a new Genre</a>
+	</div>
+	<div id="authors-section">
+
+		<div class="form-group author-group" id="existing-author-section">
+			<label asp-for="SelectedAuthors[0].Id">Author</label>
+			<select asp-for="SelectedAuthors[0].Id" class="form-control">
+				<option value="">Select an existing author</option>
+				@foreach (var author in Model.Authors)
+				{
+					<option value="@author.Id">@author.Name</option>
+				}
+			</select>
+		</div>
+
+		<div class="form-group">
+			<a id="add-new-author-link" style="color: blue; cursor: pointer;">Add a new Author</a>
+			<button type="button" id="add-author-field" class="btn btn-secondary">+</button>
+		</div>
+
+		<div class="form-group author-group" id="new-author-section" style="display: none;">
+			<label for="NewAuthor">New Author</label>
+			<input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
+			<button type="button" id="cancel-add-new-author">Cancel</button>
+		</div>
+
+	</div>
+	
+	<div class="form-group">
+		<label asp-for="ImageUrl">Book Cover Image</label>
+		<input type="file" asp-for="ImageUrl" class="form-control-file" />
+	</div>
+	<div class="form-group">
+		<label asp-for="Quantity">Quantity</label>
+		<input type="number" asp-for="Quantity" value="0" min="0" class="form-control" />
+	</div>
+	<button type="submit" class="btn btn-primary">Add Book</button>
 </form>
 
 <div>
-    <a asp-action="Books" asp-controller="Admin">Back to List</a>
+	<a asp-action="Books" asp-controller="Admin">Back to List</a>
 </div>
 
 @section Scripts {
-    <script>
-        document.getElementById('cancel-add-new-genre').addEventListener('click',function(){
-            document.getElementById('existing-genre-section').style.display='block';
-            document.getElementById('new-genre-section').style.display = 'none';
-            document.getElementById('add-new-genre-link').style.display = 'inline';
-        });
+	<script>
+			document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
+				document.getElementById('existing-genre-section').style.display = 'block';
+				document.getElementById('new-genre-section').style.display = 'none';
+				document.getElementById('add-new-genre-link').style.display = 'inline';
+			});
 
-        document.getElementById('add-new-genre-link').addEventListener('click', function() {
-            document.getElementById('existing-genre-section').style.display = 'none';
-            document.getElementById('new-genre-section').style.display = 'block';
-            document.getElementById('add-new-genre-link').style.display ='none';
-        });
+			document.getElementById('add-new-genre-link').addEventListener('click', function() {
+				document.getElementById('existing-genre-section').style.display = 'none';
+				document.getElementById('new-genre-section').style.display = 'block';
+				document.getElementById('add-new-genre-link').style.display = 'none';
+			});
 
-        document.getElementById('cancel-add-new-author').addEventListener('click',function(){
-            document.getElementById('existing-author-section').style.display='block';
-            document.getElementById('new-author-section').style.display = 'none';
-            document.getElementById('add-new-author-link').style.display = 'inline';
-        });
+			document.getElementById('cancel-add-new-author').addEventListener('click', function() {
+				document.getElementById('existing-author-section').style.display = 'block';
+				document.getElementById('new-author-section').style.display = 'none';
+				document.getElementById('add-new-author-link').style.display = 'inline';
+			});
 
-        document.getElementById('add-new-author-link').addEventListener('click', function() {
-            document.getElementById('existing-author-section').style.display = 'none';
-            document.getElementById('new-author-section').style.display = 'block';
-            document.getElementById('add-new-author-link').style.display ='none';
-        });
-    </script>
+			document.getElementById('add-new-author-link').addEventListener('click', function() {
+
+				const newAuthorSection =   document.getElementById('new-author-section');
+				newAuthorSection.style.display='block';
+
+				const authorsSection = document.getElementById('authors-section');
+				const authorCount = authorsSection.querySelectorAll('.author-group').length;
+
+			
+			
+
+				const newAuthorInput =  document.getElementById('NewAuthor');
+				newAuthorInput.setAttribute('name', `SelectedAuthors[${authorCount}-1].Name`);
+
+				document.getElementById('add-new-author-link').style.display = 'none';
+
+
+
+
+			});
+
+				document.getElementById('add-author-field').addEventListener('click', function () {
+				var authorsSection = document.getElementById('authors-section');
+
+				// Count the existing author-group elements
+				var authorCount = authorsSection.querySelectorAll('.author-group').length;
+
+				// Create a new div for the author input
+				var newAuthorDiv = document.createElement('div');
+				newAuthorDiv.className = 'form-group author-group';
+
+				// Create a label for the new author select field
+				var label = document.createElement('label');
+				label.setAttribute('for', `SelectedAuthors_${authorCount}__Id`);
+				label.innerText = `Author ${authorCount + 1}`;
+
+				// Create a select dropdown for existing authors
+				var select = document.createElement('select');
+				select.className = 'form-control';
+				select.setAttribute('name', `SelectedAuthors[${authorCount}].Id`); // Ensure unique name
+				select.setAttribute('id', `SelectedAuthors_${authorCount}__Id`);
+				select.innerHTML = `
+					<option value="">Select an existing author</option>
+		@foreach (var author in Model.Authors)
+		{
+							<option value="@author.Id">@author.Name</option>
+		}
+			`;
+
+			// Create a remove button for this author input
+			var removeButton = document.createElement('button');
+			removeButton.type = 'button';
+			removeButton.className = 'btn btn-danger';
+			removeButton.innerText = 'X';
+			removeButton.style.marginLeft = '10px';
+			removeButton.addEventListener('click', function () {
+				authorsSection.removeChild(newAuthorDiv);
+			});
+
+			// Append the label, select, and remove button to the new author div
+			newAuthorDiv.appendChild(label);
+			newAuthorDiv.appendChild(select);
+			newAuthorDiv.appendChild(removeButton);
+
+			// Append the new author div to the authors section
+			authorsSection.appendChild(newAuthorDiv);
+		});
+	</script>
 }

@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LibraryManager.Entities
 {
-    public class Book
+    public class Book : BaseEntity
     {
-        [Key]
-        public int BookId {  get; set; }
-
         public string Title { get; set; }   
 
         public int GenreId { get; set; }
+
+        public int OnStock { get; set; }
 
 
         [ForeignKey("GenreId")]
@@ -19,5 +18,7 @@ namespace LibraryManager.Entities
         public virtual List<Borrowing> Borrowings { get; set; }    
 
         public virtual List<BookAuthor> BookAuthors { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

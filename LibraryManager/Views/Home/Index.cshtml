@@ -2,25 +2,36 @@
 @using LibraryManager.Entities
 
 @{
-    Layout = "/Views/Shared/_Site.cshtml";
-    ViewData["Title"] = "Home Page";
+	Layout = "/Views/Shared/_Site.cshtml";
+	ViewData["Title"] = "Home Page";
 }
 
 @foreach (Book book in Model.Books)
 {
-    <div class="row my-3">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">@book.Title</h3>
-                    <p class="card-text">
-                        <strong>Genre:</strong> @book.Genre.Name<br />
-                        <strong>Author:</strong>
-                        @string.Join(" ", Model.BookAuthors.Where(x => x.BookId == book.BookId).Select(x => x.Author.Name).ToList())
-                    </p>
-                    <a asp-controller="Home" asp-action="Borrow" asp-route-id="@book.BookId" class="btn btn-primary">Borrow</a>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row my-3">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">@book.Title</h3>
+					<p class="card-text">
+						<div class="text-center">
+							<img src="@Url.Content(@book.ImageUrl)" alt="BookCoverPhoto" class="img-thumbnail" style="width: 200px; height: 300px;" />
+						</div>
+						<strong>Genre:</strong> @book.Genre.Name<br />
+						<strong>Author:</strong>
+						@string.Join(" ", Model.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())
+						@if (book.OnStock > 0)
+						{
+						<p>On Stock: @book.OnStock</p>
+						<a asp-controller="Home" asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-primary">Borrow</a>
+						}
+						else
+						{
+						<p>OUT OF STOCK</p>
+						}
+
+				</div>
+			</div>
+		</div>
+	</div>
 }

@@ -2,10 +2,8 @@
 
 namespace LibraryManager.Entities
 {
-    public class Author
+    public class Author : BaseEntity
     {
-        [Key]
-        public int AuthorId { get; set; }
 
         public string Name { get; set; }
 

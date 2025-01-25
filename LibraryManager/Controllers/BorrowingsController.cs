@@ -13,25 +13,29 @@ namespace LibraryManager.Controllers
     {
         public IActionResult Index()
         {
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+            BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
 
             IndexVM model = new IndexVM();
 
             Member member = this.HttpContext.Session.GetObject<Member>("loggedMember");
 
-            model.Borrowings = context.Borrowings.Where(x=>x.MemberId==member.MemberId).ToList();
+            model.Borrowings = borrowingsRepository.GetAll(x => x.MemberId == member.Id);
             return View(model);
         }
 
         public IActionResult ReturnBorrowedBook(int id)
         {
-            LibraryManagerDbContext context = new LibraryManagerDbContext();
+            BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
+            BooksRepository booksRepository = new BooksRepository();    
 
-            Borrowing borrowing = context.Borrowings.FirstOrDefault(b => b.BorrowingId == id);
+            Borrowing borrowing = borrowingsRepository.GetFirstOrDefault(b => b.Id == id);
             borrowing.ReturnOn  = DateTime.Now;
 
-            context.SaveChanges();
+            Book book = booksRepository.GetFirstOrDefault(book => book.Id == borrowing.BookId);
+            book.OnStock++;
 
+            booksRepository.Save(book);
+            borrowingsRepository.Save(borrowing);
             return RedirectToAction("Index","Borrowings");
         }
     }

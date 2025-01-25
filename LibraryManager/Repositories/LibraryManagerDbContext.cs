@@ -38,29 +38,50 @@ namespace LibraryManager.Repositories
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasData(
-                new Author { AuthorId = 1, Name = "J.K. Rowling" },
-                new Author { AuthorId = 2, Name = "George R.R. Martin" },
-                new Author { AuthorId = 3, Name = "J.R.R. Tolkien" }
+                new Author { Id = 1, Name = "J.K. Rowling" },
+                new Author { Id = 2, Name = "George R.R. Martin" },
+                new Author { Id = 3, Name = "J.R.R. Tolkien" }
             );
 
-     
+
             modelBuilder.Entity<Book>().HasData(
-                new Book { BookId = 1, Title = "Harry Potter and the Philosopher's Stone", GenreId = 1 },
-                new Book { BookId = 2, Title = "A Game of Thrones", GenreId = 2 },
-                new Book { BookId = 3, Title = "The Hobbit", GenreId = 1 }
+                new Book
+                {
+                    Id = 1,
+                    Title = "Harry Potter and the Philosopher's Stone",
+                    GenreId = 1,
+                    ImageUrl = "~/images/HarryPotterAndThePhilosopher'sStoneBookCover.jpg",
+                    OnStock=2
+                    
+                },
+                new Book {
+                    Id = 2, 
+                    Title = "A Game of Thrones", 
+                    GenreId = 2,
+                    ImageUrl = "~/images/AGameOfThronesBookCover.jpg",
+                    OnStock=0
+
+                },
+                new Book { 
+                    Id = 3,
+                    Title = "The Hobbit",
+                    GenreId = 1,
+                    ImageUrl = "~/images/TheHobbitBookCover.jpg",
+                    OnStock=3
+                }
             );
 
       
             modelBuilder.Entity<Genre>().HasData(
-                new Genre { GenreId = 1, Name = "Fantasy" },
-                new Genre { GenreId = 2, Name = "Epic Fantasy" }
+                new Genre { Id = 1, Name = "Fantasy" },
+                new Genre { Id = 2, Name = "Epic Fantasy" }
             );
 
      
             modelBuilder.Entity<BookAuthor>().HasData(
-                new BookAuthor { BookId = 1, AuthorId = 1 }, // Harry Potter by J.K. Rowling
-                new BookAuthor { BookId = 2, AuthorId = 2 },  // Game of Thrones by George R.R. Martin
-                new BookAuthor { BookId = 3, AuthorId = 3 }
+                new BookAuthor { Id=1,BookId = 1, AuthorId = 1 }, // Harry Potter by J.K. Rowling
+                new BookAuthor {Id=2, BookId = 2, AuthorId = 2 },  // Game of Thrones by George R.R. Martin
+                new BookAuthor {Id=3, BookId = 3, AuthorId = 3 }
 
             );
 
@@ -69,7 +90,7 @@ namespace LibraryManager.Repositories
             modelBuilder.Entity<Member>().HasData(
                  new Member
                  {
-                     MemberId = 1,
+                     Id = 1,
                      Username = "Admin",
                      Password = "0000",
                      FirstName = "Admin",
@@ -79,7 +100,7 @@ namespace LibraryManager.Repositories
                  },
                 new Member
                 {
-                    MemberId = 2,
+                    Id = 2,
                     Username = "MladMilioner",
                     Password = "0000",
                     FirstName = "Kristiyan",
@@ -88,8 +109,8 @@ namespace LibraryManager.Repositories
                     
                 },
                 new Member 
-                { 
-                    MemberId = 3,
+                {
+                    Id = 3,
                     Username="SimonG",
                     Password="0000",
                     FirstName="Stoyan",
@@ -101,7 +122,7 @@ namespace LibraryManager.Repositories
             modelBuilder.Entity<Borrowing>().HasData(
                 new Borrowing
                 {
-                    BorrowingId = 1,
+                    Id = 1,
                     MemberId = 2,
                     BookId = 2,
                     BorrowedOn = new DateTime(2024, 12, 26)

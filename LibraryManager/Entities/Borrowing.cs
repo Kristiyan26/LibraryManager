@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LibraryManager.Entities
 {
-    public class Borrowing
-    {
-
-        [Key]
-        public int BorrowingId { get; set; }    
+    public class Borrowing : BaseEntity
+    {  
 
 
         public int BookId {  get; set; }

@@ -22,8 +22,18 @@
         </div>
         <div class="col-3">
             <label>Author: </label>
-            @string.Join(" ", book.BookAuthors.Where(x => x.BookId == book.BookId).Select(x => x.Author.Name).ToList())
+            @string.Join(" ", book.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())
         </div>
+        <div class="col-3">
+            <label>On Stock</label>
+            @book.OnStock
+        </div>
+        <div class="col-3">
+            <button asp-action="Edit" asp-controller="Admin" asp-for-id="@book.Id">Edit</button>
+            <button asp-action="Dekete" asp-controller="Admin">Delete</button>
+        </div>
+
+
     
 
     </div>
