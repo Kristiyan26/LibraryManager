@@ -5,6 +5,7 @@ using LibraryManager.Repositories;
 using LibraryManager.ViewModels.Admin;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.Json;
+using System.Net;
 
 namespace LibraryManager.Controllers
 {
@@ -82,7 +83,7 @@ namespace LibraryManager.Controllers
             booksRepository.Save(book);
 
 
-
+      
             foreach (Author selectedAuthor in model.SelectedAuthors)
             {
                 if (selectedAuthor.Id != 0)
@@ -116,23 +117,46 @@ namespace LibraryManager.Controllers
 
             authorsRepository.Save(author);
 
-
             return RedirectToAction("AddBook", "Admin");
         }
 
         [HttpGet]
-        public IActionResult EditAuthor(int id)
+        public IActionResult Edit(int id)
         {
             BooksRepository booksRepository = new BooksRepository();
             BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
+           
+            List<Author> authors = new List<Author>();
+
 
             EditVM model = new EditVM();
 
-            model.Book = booksRepository.GetFirstOrDefault(x=>x.Id==id);
+            model.Book = booksRepository.GetFirstOrDefault(x => x.Id == id);
 
-            model.Authors= bookAuthorsRepository.GetAll(x=>x.BookId==)
+            model.Authors = bookAuthorsRepository.
+                GetAll(x => x.BookId == id).Select(x=>x.Author).ToList();   
 
-            return View();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditVM model)
+        {
+            BooksRepository booksRepository = new BooksRepository();
+
+            Book book = booksRepository.GetFirstOrDefault(x => x.Id == model.Book.Id);
+
+
+            //$"~/images/{model.ImageUrl}";
+            string url = $"~/images/{model.ImageFile.FileName}";
+            book.ImageUrl= url;
+            book.Title= model.Book.Title;   
+            book.OnStock=model.Book.OnStock;
+
+            booksRepository.Save(book);
+
+            return RedirectToAction("Books","Admin");
         }
 
     }
