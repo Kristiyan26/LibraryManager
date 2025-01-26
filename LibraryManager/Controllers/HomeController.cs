@@ -24,6 +24,7 @@ namespace LibraryManager.Controllers
 
 
             IndexVM model = new IndexVM();
+            model.SelectedGenre = genre;
             model.BookAuthors = bookAuthorsRepository.GetAll();
             model.Genres = genresRepository.GetAll();
 
