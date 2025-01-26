@@ -7,7 +7,7 @@
 }
 <form method="post" asp-action="Index" asp-controller="Home">
     <select name="genre" onchange="this.form.submit()">
-        <option value="">All Categories</option>
+        <option value="">All Genres</option>
         @foreach (Genre genre in Model.Genres)
         {
             <option value="@genre.Name" selected="@(Model.SelectedGenre == genre.Name? "selected" : null)">
