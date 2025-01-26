@@ -147,7 +147,6 @@ namespace LibraryManager.Controllers
 
             Book book = booksRepository.GetFirstOrDefault(x => x.Id == model.Book.Id);
 
-
             //$"~/images/{model.ImageUrl}";
             string url = $"~/images/{model.ImageFile.FileName}";
             book.ImageUrl= url;
@@ -159,5 +158,15 @@ namespace LibraryManager.Controllers
             return RedirectToAction("Books","Admin");
         }
 
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            BooksRepository booksRepository = new BooksRepository();
+            Book book = booksRepository.GetFirstOrDefault( x => x.Id == id);
+            booksRepository.Delete(book);
+            return RedirectToAction("Books", "Admin");
+
+        }
     }
 }
