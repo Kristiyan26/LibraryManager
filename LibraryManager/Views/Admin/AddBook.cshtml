@@ -41,19 +41,18 @@
 					<option value="@author.Id">@author.Name</option>
 				}
 			</select>
-		</div>
 
-		<div class="form-group">
-			<a id="add-new-author-link" style="color: blue; cursor: pointer;">Add a new Author</a>
-			<button type="button" id="add-author-field" class="btn btn-secondary">+</button>
-		</div>
+			<div class="form-group">
+				<a id="add-new-author-link" style="color: blue; cursor: pointer;">Add a new Author</a>
+				<button type="button" id="add-author-field" class="btn btn-secondary">+</button>
+			</div>
 
-		<div class="form-group author-group" id="new-author-section" style="display: none;">
-			<label for="NewAuthor">New Author</label>
-			<input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
-			<button type="button" id="cancel-add-new-author">Cancel</button>
+			<div class="form-group" id="new-author-section" style="display: none;">
+				<label for="NewAuthor">New Author</label>
+				<input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
+				<button type="button" id="cancel-add-new-author">Cancel</button>
+			</div>
 		</div>
-
 	</div>
 	
 	<div class="form-group">
@@ -100,12 +99,9 @@
 				const authorCount = authorsSection.querySelectorAll('.author-group').length;
 
 				const newAuthorInput =  document.getElementById('NewAuthor');
-				newAuthorInput.setAttribute('name', `SelectedAuthors[${authorCount}-1].Name`);
+				newAuthorInput.setAttribute('name', `SelectedAuthors[${authorCount}].Name`);
 
 				document.getElementById('add-new-author-link').style.display = 'none';
-
-
-
 
 			});
 
@@ -116,17 +112,13 @@
 				var newAuthorDiv = document.createElement('div');
 				newAuthorDiv.className = 'form-group author-group';
 
-
 				// Count the existing author-group elements
-				var authorCount = authorsSection.querySelectorAll('.author-group').length-1;
-
-			
-			
+				var authorCount = authorsSection.querySelectorAll('.author-group').length;
 
 				// Create a label for the new author select field
 				var label = document.createElement('label');
 				label.setAttribute('for', `SelectedAuthors_${authorCount}__Id`);
-				label.innerText = `Author ${authorCount + 1}`;
+				label.innerText = `Author ${authorCount}`;
 
 				// Create a select dropdown for existing authors
 				var select = document.createElement('select');
