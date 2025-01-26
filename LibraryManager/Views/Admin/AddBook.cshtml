@@ -99,9 +99,6 @@
 				const authorsSection = document.getElementById('authors-section');
 				const authorCount = authorsSection.querySelectorAll('.author-group').length;
 
-			
-			
-
 				const newAuthorInput =  document.getElementById('NewAuthor');
 				newAuthorInput.setAttribute('name', `SelectedAuthors[${authorCount}-1].Name`);
 
@@ -115,12 +112,16 @@
 				document.getElementById('add-author-field').addEventListener('click', function () {
 				var authorsSection = document.getElementById('authors-section');
 
-				// Count the existing author-group elements
-				var authorCount = authorsSection.querySelectorAll('.author-group').length-1;
-
 				// Create a new div for the author input
 				var newAuthorDiv = document.createElement('div');
 				newAuthorDiv.className = 'form-group author-group';
+
+
+				// Count the existing author-group elements
+				var authorCount = authorsSection.querySelectorAll('.author-group').length-1;
+
+			
+			
 
 				// Create a label for the new author select field
 				var label = document.createElement('label');
@@ -138,7 +139,8 @@
 		{
 							<option value="@author.Id">@author.Name</option>
 		}
-			`;
+			
+		`;
 
 			// Create a remove button for this author input
 			var removeButton = document.createElement('button');
