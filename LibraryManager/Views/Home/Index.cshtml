@@ -2,36 +2,44 @@
 @using LibraryManager.Entities
 
 @{
-	Layout = "/Views/Shared/_Site.cshtml";
-	ViewData["Title"] = "Home Page";
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "Home Page";
 }
 
-@foreach (Book book in Model.Books)
-{
-	<div class="row my-3">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">@book.Title</h3>
-					<p class="card-text">
-						<div class="text-center">
-							<img src="@Url.Content(@book.ImageUrl)" alt="BookCoverPhoto" class="img-thumbnail" style="width: 200px; height: 300px;" />
-						</div>
-						<strong>Genre:</strong> @book.Genre.Name<br />
-						<strong>Author:</strong>
-						@string.Join(" ", Model.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())
-						@if (book.OnStock > 0)
-						{
-						<p>On Stock: @book.OnStock</p>
-						<a asp-controller="Home" asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-primary">Borrow</a>
-						}
-						else
-						{
-						<p>OUT OF STOCK</p>
-						}
+<div class="container my-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (Book book in Model.Books)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <!-- Book Image -->
+                    <div class="text-center mt-3">
+                        <img src="@Url.Content(@book.ImageUrl)" alt="Book Cover Photo" class="img-fluid img-thumbnail" style="width: 200px; height: 300px;" />
+                    </div>
+                    <div class="card-body">
+                        <!-- Book Title -->
+                        <h5 class="card-title text-center text-primary fw-bold">@book.Title</h5>
 
-				</div>
-			</div>
-		</div>
-	</div>
-}
+                        <!-- Book Details -->
+                        <p class="card-text">
+                            <strong>Genre:</strong> @book.Genre.Name<br />
+                            <strong>Author:</strong>
+                            @string.Join(" ", Model.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())
+                        </p>
+
+                        <!-- Stock and Borrow Button -->
+                        @if (book.OnStock > 0)
+                        {
+                            <p class="text-success fw-bold">On Stock: @book.OnStock</p>
+                            <a asp-controller="Home" asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-primary w-100">Borrow</a>
+                        }
+                        else
+                        {
+                            <p class="text-danger fw-bold">OUT OF STOCK</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

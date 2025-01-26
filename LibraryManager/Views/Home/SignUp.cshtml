@@ -1,62 +1,49 @@
-﻿
-@model LibraryManager.ViewModels.Home.SignUpVM
-
+﻿@model LibraryManager.ViewModels.Home.SignUpVM
 
 @{
     Layout = "/Views/Shared/_Site.cshtml";
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Create Account";
 }
 
-
-<fieldset>
-    <legend>Create Account</legend>
-    <form asp-action="SignUp" asp-controller="Home" method="post">
-        <div class="grid">
-            <div class="row">
-                <div class="col-1">@Html.LabelFor(m => m.FirstName)</div>
-                <div class="col-2">
-                    @Html.TextBoxFor(m => m.FirstName)
-                </div>
-                <div class="col-2">@Html.ValidationMessageFor(m => m.FirstName)  </div>
-            </div>
-            <div class="grid">
-                <div class="row">
-                    <div class="col-1">@Html.LabelFor(m => m.LastName)</div>
-                    <div class="col-2">
-                        @Html.TextBoxFor(m => m.LastName)
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <fieldset class="border p-4 rounded shadow-sm">
+                <legend class="text-center fw-bold mb-4 text-primary">Create Account</legend>
+                <form asp-action="SignUp" asp-controller="Home" method="post">
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
-                    <div class="col-2">@Html.ValidationMessageFor(m => m.LastName)  </div>
-                </div>
-        <div class="grid">
-            <div class="row">
-                <div class="col-1">@Html.LabelFor(m => m.Username)</div>
-                <div class="col-2">
-                    @Html.TextBoxFor(m => m.Username)
-                </div>
-                <div class="col-2">@Html.ValidationMessageFor(m => m.Username)  </div>
-            </div>
-            <div class="row">
-                <div class="col-1">@Html.LabelFor(m => m.Password)</div>
-                <div class="col-2">
-                    @Html.PasswordFor(m => m.Password)
-                </div>
-                <div class="col-2">@Html.ValidationMessageFor(m => m.Password)  </div>
 
-            </div>
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-2">
-                    @Html.ValidationMessage("authError",
-                             new { @style = "error right" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-1"></div>
-                <div class="col-2">
-                    <input type="submit" value="SignUp" />
-                   
-                </div>
-            </div>
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <span asp-validation-summary="ModelOnly" class="text-danger"></span>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                    </div>
+                </form>
+            </fieldset>
         </div>
-    </form>
-</fieldset>
+    </div>
+</div>
