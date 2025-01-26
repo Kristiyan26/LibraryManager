@@ -6,11 +6,11 @@
     ViewData["Title"] = "Home Page";
 }
 <form method="post" asp-action="Index" asp-controller="Home">
-    <select name="selectedCategory" onchange="this.form.submit()">
+    <select name="genre" onchange="this.form.submit()">
         <option value="">All Categories</option>
         @foreach (Genre genre in Model.Genres)
         {
-            <option value="@genre.Name" selected="@(Model.SelectedGenreId == genre.Id ? "selected" : null)">
+            <option value="@genre.Name" selected="@(Model.SelectedGenre == genre.Name? "selected" : null)">
                 @genre.Name
             </option>
         }

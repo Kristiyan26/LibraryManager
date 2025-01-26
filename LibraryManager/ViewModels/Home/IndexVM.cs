@@ -8,7 +8,7 @@ namespace LibraryManager.ViewModels.Home
 
         public List<Genre> Genres { get; set; }
 
-        public int SelectedGenreId { get; set; }    
+        public string SelectedGenre { get; set; }    
 
         public List<BookAuthor> BookAuthors { get; set; }   
 

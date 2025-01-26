@@ -8,19 +8,33 @@ using System.Diagnostics;
 
 namespace LibraryManager.Controllers
 {
+
+
     public class HomeController : Controller
     {
 
-        public IActionResult Index()
+
+        [HttpGet]
+        [HttpPost]
+        public IActionResult Index(string? genre)
         {
             BooksRepository booksRepository = new BooksRepository();
             BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
+            GenresRepository genresRepository = new GenresRepository();
+
 
             IndexVM model = new IndexVM();
+            model.BookAuthors = bookAuthorsRepository.GetAll();
+            model.Genres = genresRepository.GetAll();
 
-            model.Books = booksRepository.GetAll();
-
-            model.BookAuthors= bookAuthorsRepository.GetAll(); 
+            if (!string.IsNullOrEmpty(genre))
+            {      
+                model.Books = booksRepository.GetAll(x=>x.Genre.Name==genre);
+            }
+            else
+            {
+                model.Books = booksRepository.GetAll();
+            }
 
             return View(model);
         }
