@@ -45,13 +45,12 @@
 			<div class="form-group">
 				<a id="add-new-author-link" style="color: blue; cursor: pointer;">Add a new Author</a>
 				<button type="button" id="add-author-field" class="btn btn-secondary">+</button>
-			</div>
-
-			<div class="form-group" id="new-author-section" style="display: none;">
-				<label for="NewAuthor">New Author</label>
-				<input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
-				<button type="button" id="cancel-add-new-author">Cancel</button>
-			</div>
+			</div>			
+		</div>
+		<div class="form-group" id="new-author-section" style="display: none;">
+			<label for="NewAuthor">New Author</label>
+			<input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
+			<button type="button" id="cancel-add-new-author">Cancel</button>
 		</div>
 	</div>
 	
@@ -70,31 +69,36 @@
 	<a asp-action="Books" asp-controller="Admin">Back to List</a>
 </div>
 
+<a asp-action="AddAuthor" asp-controller="Admin"> Add Author</a>
 @section Scripts {
 	<script>
-			document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
-				document.getElementById('existing-genre-section').style.display = 'block';
-				document.getElementById('new-genre-section').style.display = 'none';
-				document.getElementById('add-new-genre-link').style.display = 'inline';
-			});
+			// document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
+			// 	document.getElementById('existing-genre-section').style.display = 'block';
+			// 	document.getElementById('new-genre-section').style.display = 'none';
+			// 	document.getElementById('add-new-genre-link').style.display = 'inline';
+			// });
 
-			document.getElementById('add-new-genre-link').addEventListener('click', function() {
-				document.getElementById('existing-genre-section').style.display = 'none';
-				document.getElementById('new-genre-section').style.display = 'block';
-				document.getElementById('add-new-genre-link').style.display = 'none';
-			});
+			// document.getElementById('add-new-genre-link').addEventListener('click', function() {
+			// 	document.getElementById('existing-genre-section').style.display = 'none';
+			// 	document.getElementById('new-genre-section').style.display = 'block';
+			// 	document.getElementById('add-new-genre-link').style.display = 'none';
+			// });
 
-			document.getElementById('cancel-add-new-author').addEventListener('click', function() {
-				document.getElementById('existing-author-section').style.display = 'block';
-				document.getElementById('new-author-section').style.display = 'none';
-				document.getElementById('add-new-author-link').style.display = 'inline';
-			});
+			// document.getElementById('cancel-add-new-author').addEventListener('click', function() {
+			// 	document.getElementById('existing-author-section').style.display = 'block';
+			// 	document.getElementById('new-author-section').style.display = 'none';
+			// 	document.getElementById('add-new-author-link').style.display = 'inline';
+			// });
 
 			document.getElementById('add-new-author-link').addEventListener('click', function() {
 
 				const newAuthorSection =   document.getElementById('new-author-section');
 				newAuthorSection.style.display='block';
 
+				const existingAuthorSection = document.getElementById('existing-author-section');
+				existingAuthorSection.style.display='none';
+
+				existingAuthorSection.setAttribute('class','form-group');
 				const authorsSection = document.getElementById('authors-section');
 				const authorCount = authorsSection.querySelectorAll('.author-group').length;
 

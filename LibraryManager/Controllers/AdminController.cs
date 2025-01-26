@@ -109,5 +109,19 @@ namespace LibraryManager.Controllers
             return RedirectToAction("Books", "Admin");
         }
 
+        [HttpGet]
+        public IActionResult AddAuthor()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddAuthor(AddAuthorVM model)
+        {
+
+
+
+            return View();
+        }
     }
 }
