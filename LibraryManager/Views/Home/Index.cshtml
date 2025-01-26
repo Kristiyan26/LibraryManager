@@ -5,6 +5,17 @@
     Layout = "/Views/Shared/_Site.cshtml";
     ViewData["Title"] = "Home Page";
 }
+<form method="post" asp-action="Index" asp-controller="Home">
+    <select name="selectedCategory" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        @foreach (Genre genre in Model.Genres)
+        {
+            <option value="@genre.Name" selected="@(Model.SelectedGenreId == genre.Id ? "selected" : null)">
+                @genre.Name
+            </option>
+        }
+    </select>
+</form>
 
 <div class="container my-4">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
