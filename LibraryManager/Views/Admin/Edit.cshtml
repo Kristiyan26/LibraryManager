@@ -1,0 +1,55 @@
+﻿@model LibraryManager.ViewModels.Admin.EditVM
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<h1>Edit Book</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OnStock" class="control-label"></label>
+                <input asp-for="OnStock" class="form-control" />
+                <span asp-validation-for="OnStock" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genre.Name" class="control-label"></label>
+                <input asp-for="Genre.Name" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label>Authors</label>
+                <ul class="list-group">
+                    @foreach (var author in Model.BookAuthors)
+                    {
+                        <li class="list-group-item">@author.Author.Name</li>
+                    }
+                </ul>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

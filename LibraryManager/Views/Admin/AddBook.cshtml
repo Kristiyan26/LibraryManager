@@ -72,42 +72,7 @@
 <a asp-action="AddAuthor" asp-controller="Admin"> Add Author</a>
 @section Scripts {
 	<script>
-			// document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
-			// 	document.getElementById('existing-genre-section').style.display = 'block';
-			// 	document.getElementById('new-genre-section').style.display = 'none';
-			// 	document.getElementById('add-new-genre-link').style.display = 'inline';
-			// });
-
-			// document.getElementById('add-new-genre-link').addEventListener('click', function() {
-			// 	document.getElementById('existing-genre-section').style.display = 'none';
-			// 	document.getElementById('new-genre-section').style.display = 'block';
-			// 	document.getElementById('add-new-genre-link').style.display = 'none';
-			// });
-
-			// document.getElementById('cancel-add-new-author').addEventListener('click', function() {
-			// 	document.getElementById('existing-author-section').style.display = 'block';
-			// 	document.getElementById('new-author-section').style.display = 'none';
-			// 	document.getElementById('add-new-author-link').style.display = 'inline';
-			// });
-
-			document.getElementById('add-new-author-link').addEventListener('click', function() {
-
-				const newAuthorSection =   document.getElementById('new-author-section');
-				newAuthorSection.style.display='block';
-
-				const existingAuthorSection = document.getElementById('existing-author-section');
-				existingAuthorSection.style.display='none';
-
-				existingAuthorSection.setAttribute('class','form-group');
-				const authorsSection = document.getElementById('authors-section');
-				const authorCount = authorsSection.querySelectorAll('.author-group').length;
-
-				const newAuthorInput =  document.getElementById('NewAuthor');
-				newAuthorInput.setAttribute('name', `SelectedAuthors[${authorCount}].Name`);
-
-				document.getElementById('add-new-author-link').style.display = 'none';
-
-			});
+			
 
 				document.getElementById('add-author-field').addEventListener('click', function () {
 				var authorsSection = document.getElementById('authors-section');

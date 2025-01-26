@@ -24,7 +24,7 @@ namespace LibraryManager.Controllers
         }
         public IActionResult Books()
         {
-            BooksRepository booksRepository = new BooksRepository();    
+            BooksRepository booksRepository = new BooksRepository();
 
             BooksVM model = new BooksVM();
 
@@ -39,7 +39,7 @@ namespace LibraryManager.Controllers
             AddBookVM model = new AddBookVM();
 
             AuthorsRepository authorsRepository = new AuthorsRepository();
-            GenresRepository genresRepository = new GenresRepository(); 
+            GenresRepository genresRepository = new GenresRepository();
 
             model.Authors = authorsRepository.GetAll();
             model.Genres = genresRepository.GetAll();
@@ -51,16 +51,15 @@ namespace LibraryManager.Controllers
         public IActionResult AddBook(AddBookVM model)
         {
 
-            List<Author> selected = model.SelectedAuthors;
+
 
             GenresRepository genresRepository = new GenresRepository();
             AuthorsRepository authorsRepository = new AuthorsRepository();
-            BooksRepository booksRepository = new BooksRepository();  
+            BooksRepository booksRepository = new BooksRepository();
             BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
 
 
             Genre genre = null;
-            Author author = null;
 
             if (model.Genre.Id != 0)
             {
@@ -75,36 +74,27 @@ namespace LibraryManager.Controllers
                 genresRepository.Save(genre);
 
             }
+            Book book = new Book();
+            book.Title = model.Title;
+            book.GenreId = model.Genre.Id;
+            book.OnStock = model.Quantity;
+            book.ImageUrl = $"~/images/{model.ImageUrl}";
+            booksRepository.Save(book);
 
-            foreach(Author selectedAuthor in model.SelectedAuthors)
+
+
+            foreach (Author selectedAuthor in model.SelectedAuthors)
             {
                 if (selectedAuthor.Id != 0)
                 {
-                    author = authorsRepository.GetFirstOrDefault(a => a.Id == selectedAuthor.Id);
-                }
-                else if(String.IsNullOrEmpty(selectedAuthor.Name))
-                {
-                    author = new Author();
-                    author.Name = selectedAuthor.Name;
+                    BookAuthor bookAuthor = new BookAuthor();
+                    bookAuthor.BookId = book.Id;
+                    bookAuthor.AuthorId = authorsRepository.GetFirstOrDefault(a => a.Id == selectedAuthor.Id).Id;
+                    bookAuthorsRepository.Save(bookAuthor);
 
-                    authorsRepository.Save(author);
                 }
+        
             }
-
-          
-
-            Book book = new Book();
-            book.Title = model.Title;
-            book.GenreId= model.Genre.Id;
-            book.OnStock = model.Quantity;
-            book.ImageUrl =$"~/images/{model.ImageUrl}";
-            booksRepository.Save(book);
-
-            BookAuthor bookAuthor = new BookAuthor();
-            bookAuthor.AuthorId = author.Id;
-            bookAuthor.BookId = book.Id;
-            bookAuthorsRepository.Save(bookAuthor);
-
 
             return RedirectToAction("Books", "Admin");
         }
@@ -118,10 +108,32 @@ namespace LibraryManager.Controllers
         [HttpPost]
         public IActionResult AddAuthor(AddAuthorVM model)
         {
+            AuthorsRepository authorsRepository = new AuthorsRepository();
+
+            Author author = new Author();
+
+            author.Name = model.Author.Name;
+
+            authorsRepository.Save(author);
 
 
+            return RedirectToAction("AddBook", "Admin");
+        }
+
+        [HttpGet]
+        public IActionResult EditAuthor(int id)
+        {
+            BooksRepository booksRepository = new BooksRepository();
+            BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
+
+            EditVM model = new EditVM();
+
+            model.Book = booksRepository.GetFirstOrDefault(x=>x.Id==id);
+
+            model.Authors= bookAuthorsRepository.GetAll(x=>x.BookId==)
 
             return View();
         }
+
     }
 }
