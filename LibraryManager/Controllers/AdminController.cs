@@ -147,9 +147,15 @@ namespace LibraryManager.Controllers
 
             Book book = booksRepository.GetFirstOrDefault(x => x.Id == model.Book.Id);
 
-            //$"~/images/{model.ImageUrl}";
-            string url = $"~/images/{model.ImageFile.FileName}";
-            book.ImageUrl= url;
+
+            if (model.ImageFile!=null)
+            {
+                string url = $"~/images/{model.ImageFile.FileName}";
+                //$"~/images/{model.ImageUrl}";
+                book.ImageUrl = url;
+            }
+        
+          
             book.Title= model.Book.Title;   
             book.OnStock=model.Book.OnStock;
 
