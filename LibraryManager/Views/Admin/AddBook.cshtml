@@ -51,7 +51,6 @@
                     }
                 </select>
 
-                <!-- Buttons below the dropdown -->
                 <div class="mt-2">
                     <a href="@Url.Action("AddAuthor", "Admin")" class="btn btn-primary btn-sm">Add New Author</a>
                     <button type="button" id="add-author-field" class="btn btn-primary btn-sm ms-2">+</button>
@@ -94,15 +93,13 @@
             document.getElementById('add-new-genre-link').style.display = 'none';
         });
 
-        // Add new author input dynamically
-        let authorCount = 1; // Start with 1 since the first author field is pre-existing
+        let authorCount = 1;
         document.getElementById('add-author-field').addEventListener('click', function() {
-            authorCount++; // Increment the author count
+            authorCount++;
             let newAuthorField = document.createElement('div');
             newAuthorField.classList.add('form-group', 'author-group');
             newAuthorField.id = 'author-group-' + authorCount;
 
-            // Create the select input for the new author
             newAuthorField.innerHTML = `
                 <label for="SelectedAuthors[${authorCount}].Id">Author ${authorCount}</label>
                 <select name="SelectedAuthors[${authorCount}].Id" class="form-select">
@@ -115,11 +112,9 @@
                 <button type="button" class="btn btn-danger remove-author" onclick="removeAuthor(${authorCount})">Remove</button>
             `;
 
-            // Append the new author field to the authors section
             document.getElementById('authors-section').appendChild(newAuthorField);
         });
 
-        // Function to remove an author field
         function removeAuthor(authorId) {
             let authorGroup = document.getElementById('author-group-' + authorId);
             authorGroup.remove();
