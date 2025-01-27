@@ -14,7 +14,7 @@ namespace LibraryManager.ActionFilters
                 if (context.HttpContext.Session.GetObject<Member>("loggedAdmin") != null)
                 {
                     context.HttpContext.Session.SetObject<Member>("loggedAdmin", null);
-                    context.Result = new RedirectResult("/Home/Login");
+
                 }
                 context.Result = new RedirectResult("/Home/Login");
             } 

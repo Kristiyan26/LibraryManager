@@ -8,12 +8,12 @@ namespace LibraryManager.ViewModels.Home
 
      
         [DisplayName("Username: ")]
-        [Required(ErrorMessage = "This field is Required!")]
+        [Required(ErrorMessage = "Username is Required!")]
         public string Username { get; set; }
 
 
         [DisplayName("Password: ")]
-        [Required(ErrorMessage = "This field is Required!")]
+        [Required(ErrorMessage = "Password is Required!")]
         public string Password { get; set; }
 
 

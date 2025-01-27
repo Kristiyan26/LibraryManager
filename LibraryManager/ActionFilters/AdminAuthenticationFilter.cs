@@ -11,6 +11,11 @@ namespace LibraryManager.ActionFilters
         {
             if (context.HttpContext.Session.GetObject<Member>("loggedAdmin") == null)
             {
+                if (context.HttpContext.Session.GetObject<Member>("loggedMember") != null)
+                {
+                    context.HttpContext.Session.SetObject<Member>("loggedMember", null);
+
+                }
                 context.Result = new RedirectResult("/Home/Login");
             }
         }
