@@ -31,10 +31,13 @@
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </div>
 
-                    <div class="text-center">
-                        <span class="text-muted">No account? <a href="/Home/SignUp" class="text-primary">Sign up</a></span>
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-danger btn-sm">Cancel</a>
+                        <span class="text-muted ml-2">No account? <a href="/Home/SignUp" class="text-primary">Sign up</a></span>
                     </div>
+
                 </form>
+               
             </fieldset>
         </div>
     </div>
