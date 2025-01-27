@@ -7,7 +7,7 @@ namespace LibraryManager.Entities
 
         public string Name { get; set; }
 
-        public virtual ICollection<BookAuthor> BookAuthors { get; set; }    
+        public virtual List<BookAuthor> BookAuthors { get; set; }    
 
 
     }

@@ -7,6 +7,6 @@ namespace LibraryManager.Entities
 
         public string Name { get; set; }    
 
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual List<Book> Books { get; set; }
     }
 }
