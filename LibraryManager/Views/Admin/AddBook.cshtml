@@ -8,7 +8,7 @@
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-teal">Add Book</h1>
-        <a asp-action="Books" asp-controller="Admin" class="btn btn-secondary">
+        <a asp-action="Books" asp-controller="Admin" class="btn btn-primary">
             Back to List
         </a>
     </div>
@@ -33,17 +33,16 @@
         <div id="new-genre-section" class="mb-3" style="display: none;">
             <label for="NewGenre" class="form-label">New Genre</label>
             <input asp-for="Genre.Name" type="text" id="NewGenre" class="form-control" placeholder="Enter new genre name" />
-            <button type="button" id="cancel-add-new-genre" class="btn btn-secondary mt-2">Cancel</button>
+            <button type="button" id="cancel-add-new-genre" class="btn btn-primary mt-2">Cancel</button>
         </div>
 
         <div class="mb-3">
-            <a id="add-new-genre-link" class="text-primary" style="cursor: pointer;">Add a new Genre</a>
+            <a id="add-new-genre-link" class="btn btn-primary" style="cursor: pointer;">Add a new Genre</a>
         </div>
 
         <div id="authors-section">
             <div class="mb-3 author-group" id="existing-author-section">
                 <label asp-for="SelectedAuthors[0].Id" class="form-label">Author</label>
-                <a href="@Url.Action("AddAuthor", "Admin")" class="btn btn-primary" role="button">Add New Author</a>
                 <select asp-for="SelectedAuthors[0].Id" class="form-select">
                     <option value="">Select an existing author</option>
                     @foreach (var author in Model.Authors)
@@ -51,15 +50,20 @@
                         <option value="@author.Id">@author.Name</option>
                     }
                 </select>
-                <button type="button" id="add-author-field" class="btn btn-secondary mt-2">+ Add Another Author</button>
+
+                <!-- Buttons below the dropdown -->
+                <div class="mt-2">
+                    <a href="@Url.Action("AddAuthor", "Admin")" class="btn btn-primary btn-sm">Add New Author</a>
+                    <button type="button" id="add-author-field" class="btn btn-primary btn-sm ms-2">+</button>
+                </div>
             </div>
 
             <div id="new-author-section" class="mb-3" style="display: none;">
                 <label for="NewAuthor" class="form-label">New Author</label>
                 <input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
-                <button type="button" id="cancel-add-new-author" class="btn btn-secondary mt-2">Cancel</button>
+                <button type="button" id="cancel-add-new-author" class="btn btn-primary mt-2">Cancel</button>
             </div>
-           
+
         </div>
 
         <div class="mb-3">
@@ -101,11 +105,11 @@
             // Create the select input for the new author
             newAuthorField.innerHTML = `
                 <label for="SelectedAuthors[${authorCount}].Id">Author ${authorCount}</label>
-                <select name="SelectedAuthors[${authorCount}].Id" class="form-control">
+                <select name="SelectedAuthors[${authorCount}].Id" class="form-select">
                     <option value="">Select an existing author</option>
         @foreach (var author in Model.Authors)
         {
-                            <option value="@author.Id">@author.Name</option>
+                                <option value="@author.Id">@author.Name</option>
         }
                 </select>
                 <button type="button" class="btn btn-danger remove-author" onclick="removeAuthor(${authorCount})">Remove</button>
