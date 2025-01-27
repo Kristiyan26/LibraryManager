@@ -15,5 +15,7 @@ namespace LibraryManager.Entities
 
         public string Role { get; set; }
 
+        public virtual List<Borrowing> Borrowings { get; set; }
+
     }
 }

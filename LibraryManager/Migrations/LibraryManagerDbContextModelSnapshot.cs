@@ -325,7 +325,7 @@ namespace LibraryManager.Migrations
                         .IsRequired();
 
                     b.HasOne("LibraryManager.Entities.Member", "Member")
-                        .WithMany()
+                        .WithMany("Borrowings")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -350,6 +350,11 @@ namespace LibraryManager.Migrations
             modelBuilder.Entity("LibraryManager.Entities.Genre", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("LibraryManager.Entities.Member", b =>
+                {
+                    b.Navigation("Borrowings");
                 });
 #pragma warning restore 612, 618
         }
