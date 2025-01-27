@@ -43,6 +43,7 @@
         <div id="authors-section">
             <div class="mb-3 author-group" id="existing-author-section">
                 <label asp-for="SelectedAuthors[0].Id" class="form-label">Author</label>
+                <a href="@Url.Action("AddAuthor", "Admin")" class="btn btn-primary" role="button">Add New Author</a>
                 <select asp-for="SelectedAuthors[0].Id" class="form-select">
                     <option value="">Select an existing author</option>
                     @foreach (var author in Model.Authors)
@@ -58,6 +59,7 @@
                 <input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
                 <button type="button" id="cancel-add-new-author" class="btn btn-secondary mt-2">Cancel</button>
             </div>
+           
         </div>
 
         <div class="mb-3">
@@ -76,26 +78,47 @@
 
 @section Scripts {
     <script>
-        document.getElementById('cancel-add-new-genre').addEventListener('click', function () {
+        document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
             document.getElementById('existing-genre-section').style.display = 'block';
             document.getElementById('new-genre-section').style.display = 'none';
             document.getElementById('add-new-genre-link').style.display = 'inline';
         });
 
-        document.getElementById('add-new-genre-link').addEventListener('click', function () {
+        document.getElementById('add-new-genre-link').addEventListener('click', function() {
             document.getElementById('existing-genre-section').style.display = 'none';
             document.getElementById('new-genre-section').style.display = 'block';
             document.getElementById('add-new-genre-link').style.display = 'none';
         });
 
-        document.getElementById('cancel-add-new-author').addEventListener('click', function () {
-            document.getElementById('existing-author-section').style.display = 'block';
-            document.getElementById('new-author-section').style.display = 'none';
+        // Add new author input dynamically
+        let authorCount = 1; // Start with 1 since the first author field is pre-existing
+        document.getElementById('add-author-field').addEventListener('click', function() {
+            authorCount++; // Increment the author count
+            let newAuthorField = document.createElement('div');
+            newAuthorField.classList.add('form-group', 'author-group');
+            newAuthorField.id = 'author-group-' + authorCount;
+
+            // Create the select input for the new author
+            newAuthorField.innerHTML = `
+                <label for="SelectedAuthors[${authorCount}].Id">Author ${authorCount}</label>
+                <select name="SelectedAuthors[${authorCount}].Id" class="form-control">
+                    <option value="">Select an existing author</option>
+        @foreach (var author in Model.Authors)
+        {
+                            <option value="@author.Id">@author.Name</option>
+        }
+                </select>
+                <button type="button" class="btn btn-danger remove-author" onclick="removeAuthor(${authorCount})">Remove</button>
+            `;
+
+            // Append the new author field to the authors section
+            document.getElementById('authors-section').appendChild(newAuthorField);
         });
 
-        document.getElementById('add-author-field').addEventListener('click', function () {
-            document.getElementById('existing-author-section').style.display = 'none';
-            document.getElementById('new-author-section').style.display = 'block';
-        });
+        // Function to remove an author field
+        function removeAuthor(authorId) {
+            let authorGroup = document.getElementById('author-group-' + authorId);
+            authorGroup.remove();
+        }
     </script>
 }
