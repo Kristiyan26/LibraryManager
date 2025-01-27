@@ -1,20 +1,57 @@
-﻿@model LibraryManager.ViewModels.Admin.MembersVM;
+﻿@model LibraryManager.ViewModels.Admin.MembersVM
 @using LibraryManager.Entities
 
-
 @{
-	Layout = "/Views/Shared/_Site.cshtml";
-	ViewData["Title"] = "List of Members";
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "List of Members";
 }
 
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-teal">List of Members</h1>
+    </div>
 
-@foreach (Member member in Model.Members)
-{
-	<br />
-	<div class="row">
-		<div class="col-3"><h3>@member.Username</h3></div>
-		<div class="col-3">@member.FirstName</div>
-		<div class="col-3">@member.LastName</div>
-	</div>
-
-}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Members.Any())
+                {
+                    @foreach (var member in Model.Members)
+                    {
+                        <tr>
+                            <td>@member.Username</td>
+                            <td>@member.FirstName</td>
+                            <td>@member.LastName</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="EditMember" asp-controller="Admin" asp-route-id="@member.Id" class="btn btn-sm btn-warning">
+                                        Edit
+                                    </a>
+                                    <a asp-action="DeleteMember" asp-controller="Admin" asp-route-id="@member.Id" class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            No members found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

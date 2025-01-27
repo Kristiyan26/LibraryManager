@@ -5,16 +5,20 @@
     ViewData["Title"] = "Add Author";
 }
 
-<h2>Add Author</h2>
-
-<form asp-action="AddAuthor" asp-controller="Admin" method="post">
-    <div class="form-group">
-        <label asp-for="@Model.Author.Name"></label>
-        <input asp-for="@Model.Author.Name" class="form-control" />
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-teal">Add Author</h1>
+        <a asp-action="Books" asp-controller="Admin" class="btn btn-secondary">
+            Back to List
+        </a>
     </div>
-    <button type="submit" class="btn btn-primary">Add Author</button>
-</form>
 
-<div>
-    <a asp-action="Books" asp-controller="Admin">Back to List</a>
+    <form asp-action="AddAuthor" asp-controller="Admin" method="post" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label asp-for="@Model.Author.Name" class="form-label">Author Name</label>
+            <input asp-for="@Model.Author.Name" class="form-control" placeholder="Enter author's name" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Author</button>
+    </form>
 </div>

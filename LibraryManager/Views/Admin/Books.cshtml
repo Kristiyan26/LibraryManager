@@ -3,39 +3,50 @@
 
 @{
     Layout = "/Views/Shared/_Site.cshtml";
-    ViewData["Title"] = "Home Page ";
+    ViewData["Title"] = "Books Management";
 }
 
-<h2>
-    <button> <a asp-controller="Admin" asp-action="AddBook">Add Book</a> </button>
-</h2>
-@foreach (Book book in Model.Books)
-{
-    <br />
-    <div class="row">
-        <div class="col-3">
-            <h3>@book.Title</h3>
-        </div>
-        <div class="col-3">
-            <label>Genre: </label>
-            @book.Genre.Name
-        </div>
-        <div class="col-3">
-            <label>Author: </label>
-            @string.Join(" ", book.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())
-        </div>
-        <div class="col-3">
-            <label>On Stock</label>
-            @book.OnStock
-        </div>
-        <div class="col-3">
-            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@book.Id">Edit</a>
-            <a asp-action="Delete" asp-controller="Admin" asp-route-id="@book.Id">Delete</a>
-        </div>
-
-
-    
-
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-teal">Books Management</h1>
+        <a asp-controller="Admin" asp-action="AddBook" class="btn btn-primary">
+            Add Book
+        </a>
     </div>
 
-}
+    @if (Model.Books.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (Book book in Model.Books)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-text">
+                                <strong>Genre:</strong> @book.Genre.Name<br />
+                                <strong>Author:</strong>
+                                @string.Join(", ", book.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())<br />
+                                <strong>On Stock:</strong> @book.OnStock
+                            </p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a asp-action="Edit" asp-controller="Admin" asp-route-id="@book.Id" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+                            <a asp-action="Delete" asp-controller="Admin" asp-route-id="@book.Id" class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <strong>No books available.</strong> Use the <em>Add Book</em> button to add new books.
+        </div>
+    }
+</div>

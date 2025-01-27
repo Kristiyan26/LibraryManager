@@ -3,53 +3,59 @@
     Layout = "/Views/Shared/_Site.cshtml";
     ViewData["Title"] = "Edit Book";
 }
-<div class="container">
-    <div class="book-details">
-        <h1 class="mb-4">Edit Book Details</h1>
 
-        <form asp-action="Edit" asp-controller="Admin" method="post" enctype="multipart/form-data" class="w-75 mx-auto">
-
-            <input type="hidden" asp-for="Book.Id" />
-            <div class="form-group mb-3">
-                <label asp-for="Book.Title">Title:</label>
-                <input asp-for="Book.Title" id="Title" type="text" class="form-control" />
-            </div>
-
-            <div class="form-group mb-3">
-                <label>Current Image:</label>
-                <div class="mb-3">
-                    <img id="currentImage" src="@Url.Content(Model.Book.ImageUrl)" alt="@Model.Book.Title" class="img-fluid rounded" style="max-height: 300px;" />
-                </div>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="ImageFile">Select New Image:</label>
-                <input type="file" asp-for="ImageFile" class="form-control" accept="image/*" onchange="displayImagePreview(event)" />
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Book.OnStock">Quantity:</label>
-                <input asp-for="Book.OnStock" type="number" min="0" class="form-control" />
-            </div>
-
-            <div class="form-group mb-3">
-                <label>Authors:</label>
-                <ul class="list-group">
-                    @foreach (var author in Model.Authors)
-                    {
-                        <li class="list-group-item">@author.Name</li>
-                    }
-                </ul>
-            </div>
-
-            <div class="form-group mb-3">
-                <label>Genre:</label>
-                <p class="form-control-plaintext">@Model.Book.Genre.Name</p>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-teal">Edit Book Details</h1>
+        <a asp-action="Books" asp-controller="Admin" class="btn btn-secondary">
+            Back to List
+        </a>
     </div>
+
+    <form asp-action="Edit" asp-controller="Admin" method="post" enctype="multipart/form-data" class="card p-4 shadow w-75 mx-auto rounded-3">
+        <input type="hidden" asp-for="Book.Id" />
+
+        <div class="mb-4">
+            <label asp-for="Book.Title" class="form-label">Title</label>
+            <input asp-for="Book.Title" id="Title" type="text" class="form-control" placeholder="Enter book title" />
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Current Image</label>
+            <div class="mb-3 text-center">
+                <img id="currentImage" src="@Url.Content(Model.Book.ImageUrl)" alt="@Model.Book.Title" class="img-fluid rounded" style="max-height: 300px;" />
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="ImageFile" class="form-label">Select New Image</label>
+            <input type="file" asp-for="ImageFile" class="form-control" accept="image/*" onchange="displayImagePreview(event)" />
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="Book.OnStock" class="form-label">Quantity</label>
+            <input asp-for="Book.OnStock" type="number" min="0" class="form-control" placeholder="Enter available stock" />
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Authors</label>
+            <ul class="list-group">
+                @foreach (var author in Model.Authors)
+                {
+                    <li class="list-group-item">@author.Name</li>
+                }
+            </ul>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Genre</label>
+            <p class="form-control-plaintext">@Model.Book.Genre.Name</p>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
@@ -58,7 +64,7 @@
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('currentImage').src = e.target.result;
                 };
                 reader.readAsDataURL(file);

@@ -1,89 +1,101 @@
 ﻿@model LibraryManager.ViewModels.Admin.AddBookVM
 
 @{
-	Layout = "/Views/Shared/_Site.cshtml";
-	ViewData["Title"] = "Add Book";
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "Add Book";
 }
 
-<h2>Add Book</h2>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-teal">Add Book</h1>
+        <a asp-action="Books" asp-controller="Admin" class="btn btn-secondary">
+            Back to List
+        </a>
+    </div>
 
-<form asp-action="AddBook" asp-controller="Admin" method="post">
-	<div class="form-group">
-		<label asp-for="Title"></label>
-		<input asp-for="Title" class="form-control" />
-	</div>
-	<div class="form-group" id="existing-genre-section">
-		<label asp-for="Genre.Id">Genre</label>
-		<select asp-for="Genre.Id" class="form-control">
-			<option value="">Select an existing genre</option>
-			@foreach (Genre genre in Model.Genres)
-			{
-				<option value="@genre.Id">@genre.Name</option>
-			}
-		</select>
-	</div>
-	<div class="form-group" id="new-genre-section" style="display: none;">
-		<label for="NewGenre">New Genre</label>
-		<input asp-for="Genre.Name" type="text" id="NewGenre" class="form-control" placeholder="Enter new genre name" />
-		<button type="button" id="cancel-add-new-genre">Cancel</button>
-	</div>
-	<div class="form-group">
-		<a id="add-new-genre-link" style="color: blue; cursor: pointer;">Add a new Genre</a>
-	</div>
-	<div id="authors-section">
+    <form asp-action="AddBook" asp-controller="Admin" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Book Title</label>
+            <input asp-for="Title" class="form-control" />
+        </div>
 
-		<div class="form-group author-group" id="existing-author-section">
-			<label asp-for="SelectedAuthors[0].Id">Author</label>
-			<select asp-for="SelectedAuthors[0].Id" class="form-control">
-				<option value="">Select an existing author</option>
-				@foreach (var author in Model.Authors)
-				{
-					<option value="@author.Id">@author.Name</option>
-				}
-			</select>
+        <div id="existing-genre-section" class="mb-3">
+            <label asp-for="Genre.Id" class="form-label">Genre</label>
+            <select asp-for="Genre.Id" class="form-select">
+                <option value="">Select an existing genre</option>
+                @foreach (Genre genre in Model.Genres)
+                {
+                    <option value="@genre.Id">@genre.Name</option>
+                }
+            </select>
+        </div>
 
-			<div class="form-group">
-				<button type="button" id="add-author-field" class="btn btn-secondary">+</button>
-			</div>
-		</div>
-		<div class="form-group" id="new-author-section" style="display: none;">
-			<label for="NewAuthor">New Author</label>
-			<input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
-			<button type="button" id="cancel-add-new-author">Cancel</button>
-		</div>
-	</div>
+        <div id="new-genre-section" class="mb-3" style="display: none;">
+            <label for="NewGenre" class="form-label">New Genre</label>
+            <input asp-for="Genre.Name" type="text" id="NewGenre" class="form-control" placeholder="Enter new genre name" />
+            <button type="button" id="cancel-add-new-genre" class="btn btn-secondary mt-2">Cancel</button>
+        </div>
 
-	<div class="form-group">
-		<label asp-for="ImageUrl">Book Cover Image</label>
-		<input type="file" asp-for="ImageUrl" class="form-control-file" />
-	</div>
-	<div class="form-group">
-		<label asp-for="Quantity">Quantity</label>
-		<input type="number" asp-for="Quantity" value="0" min="0" class="form-control" />
-	</div>
-	<button type="submit" class="btn btn-primary">Add Book</button>
-</form>
+        <div class="mb-3">
+            <a id="add-new-genre-link" class="text-primary" style="cursor: pointer;">Add a new Genre</a>
+        </div>
 
-<div>
-	<a asp-action="Books" asp-controller="Admin">Back to List</a>
+        <div id="authors-section">
+            <div class="mb-3 author-group" id="existing-author-section">
+                <label asp-for="SelectedAuthors[0].Id" class="form-label">Author</label>
+                <select asp-for="SelectedAuthors[0].Id" class="form-select">
+                    <option value="">Select an existing author</option>
+                    @foreach (var author in Model.Authors)
+                    {
+                        <option value="@author.Id">@author.Name</option>
+                    }
+                </select>
+                <button type="button" id="add-author-field" class="btn btn-secondary mt-2">+ Add Another Author</button>
+            </div>
+
+            <div id="new-author-section" class="mb-3" style="display: none;">
+                <label for="NewAuthor" class="form-label">New Author</label>
+                <input asp-for="SelectedAuthors[0].Name" type="text" id="NewAuthor" class="form-control" placeholder="Enter new author name" />
+                <button type="button" id="cancel-add-new-author" class="btn btn-secondary mt-2">Cancel</button>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ImageUrl" class="form-label">Book Cover Image</label>
+            <input type="file" asp-for="ImageUrl" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Quantity" class="form-label">Quantity</label>
+            <input type="number" asp-for="Quantity" value="0" min="0" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
 </div>
 
-<a asp-action="AddAuthor" asp-controller="Admin"> Add Author</a>
 @section Scripts {
-	<script>
-					document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
-			document.getElementById('existing-genre-section').style.display = 'block';
-			document.getElementById('new-genre-section').style.display = 'none';
-			document.getElementById('add-new-genre-link').style.display = 'inline';
-		});
-			document.getElementById('add-new-genre-link').addEventListener('click', function() {
-			document.getElementById('existing-genre-section').style.display = 'none';
-			document.getElementById('new-genre-section').style.display = 'block';
-			document.getElementById('add-new-genre-link').style.display = 'none';
-		});
+    <script>
+        document.getElementById('cancel-add-new-genre').addEventListener('click', function () {
+            document.getElementById('existing-genre-section').style.display = 'block';
+            document.getElementById('new-genre-section').style.display = 'none';
+            document.getElementById('add-new-genre-link').style.display = 'inline';
+        });
 
+        document.getElementById('add-new-genre-link').addEventListener('click', function () {
+            document.getElementById('existing-genre-section').style.display = 'none';
+            document.getElementById('new-genre-section').style.display = 'block';
+            document.getElementById('add-new-genre-link').style.display = 'none';
+        });
 
+        document.getElementById('cancel-add-new-author').addEventListener('click', function () {
+            document.getElementById('existing-author-section').style.display = 'block';
+            document.getElementById('new-author-section').style.display = 'none';
+        });
 
-
-	</script>
+        document.getElementById('add-author-field').addEventListener('click', function () {
+            document.getElementById('existing-author-section').style.display = 'none';
+            document.getElementById('new-author-section').style.display = 'block';
+        });
+    </script>
 }
