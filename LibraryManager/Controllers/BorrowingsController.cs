@@ -11,7 +11,7 @@ namespace LibraryManager.Controllers
     [AuthenticationFilter]
     public class BorrowingsController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index() 
         {
             BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
 

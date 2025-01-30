@@ -8,9 +8,9 @@ namespace LibraryManager.ViewModels.Admin
 
         public List<Author> SelectedAuthors {  get; set; }
 
-        public Genre Genre {  get; set; }   
+        public Genre Genre {  get; set; }
 
-        public string ImageUrl { get; set; }    
+        public IFormFile ImageUrl { get; set; }    
 
         public int Quantity { get; set; }   
 

@@ -10,7 +10,7 @@ namespace LibraryManager.ActionFilters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.HttpContext.Session.GetObject<Member>("loggedAdmin") == null)
-            {
+            { 
                 if (context.HttpContext.Session.GetObject<Member>("loggedMember") != null)
                 {
                     context.HttpContext.Session.SetObject<Member>("loggedMember", null);

@@ -43,6 +43,7 @@
         <div id="authors-section">
             <div class="mb-3 author-group" id="existing-author-section">
                 <label asp-for="SelectedAuthors[0].Id" class="form-label">Author</label>
+                <button type="button" id="add-author-field" class="btn btn-primary btn-sm ms-2">+</button>
                 <select asp-for="SelectedAuthors[0].Id" class="form-select">
                     <option value="">Select an existing author</option>
                     @foreach (var author in Model.Authors)
@@ -53,7 +54,7 @@
 
                 <div class="mt-2">
                     <a href="@Url.Action("AddAuthor", "Admin")" class="btn btn-primary btn-sm">Add New Author</a>
-                    <button type="button" id="add-author-field" class="btn btn-primary btn-sm ms-2">+</button>
+                    
                 </div>
             </div>
 
@@ -93,31 +94,56 @@
             document.getElementById('add-new-genre-link').style.display = 'none';
         });
 
-        let authorCount = 1;
-        document.getElementById('add-author-field').addEventListener('click', function() {
-            authorCount++;
-            let newAuthorField = document.createElement('div');
-            newAuthorField.classList.add('form-group', 'author-group');
-            newAuthorField.id = 'author-group-' + authorCount;
-
-            newAuthorField.innerHTML = `
-                <label for="SelectedAuthors[${authorCount}].Id">Author ${authorCount}</label>
-                <select name="SelectedAuthors[${authorCount}].Id" class="form-select">
+        document.getElementById('add-author-field').addEventListener('click', function () {
+                var authorsSection = document.getElementById('authors-section');
+                // Create a new div for the author input
+                var newAuthorDiv = document.createElement('div');
+                newAuthorDiv.className = 'form-group author-group';
+                // Count the existing author-group elements
+                var authorCount = authorsSection.querySelectorAll('.author-group').length;
+                // Create a label for the new author select field
+                var label = document.createElement('label');
+                label.setAttribute('for', `SelectedAuthors_${authorCount}__Id`);
+                label.innerText = `Author ${authorCount+1}`;
+                    document.getElementById('cancel-add-new-genre').addEventListener('click', function() {
+            document.getElementById('existing-genre-section').style.display = 'block';
+            document.getElementById('new-genre-section').style.display = 'none';
+            document.getElementById('add-new-genre-link').style.display = 'inline';
+        });
+            document.getElementById('add-new-genre-link').addEventListener('click', function() {
+            document.getElementById('existing-genre-section').style.display = 'none';
+            document.getElementById('new-genre-section').style.display = 'block';
+            document.getElementById('add-new-genre-link').style.display = 'none';
+        });
+                // Create a select dropdown for existing authors
+                var select = document.createElement('select');
+                select.className = 'form-control';
+                select.setAttribute('name', `SelectedAuthors[${authorCount}].Id`); // Ensure unique name
+                select.setAttribute('id', `SelectedAuthors_${authorCount}__Id`);
+                select.innerHTML = `
                     <option value="">Select an existing author</option>
         @foreach (var author in Model.Authors)
         {
                                 <option value="@author.Id">@author.Name</option>
         }
-                </select>
-                <button type="button" class="btn btn-danger remove-author" onclick="removeAuthor(${authorCount})">Remove</button>
-            `;
 
-            document.getElementById('authors-section').appendChild(newAuthorField);
+        `;
+            // Create a remove button for this author input
+            var removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'btn btn-danger';
+            removeButton.innerText = 'X';
+            removeButton.style.marginLeft = '10px';
+            removeButton.addEventListener('click', function () {
+                authorsSection.removeChild(newAuthorDiv);
+            });
+            // Append the label, select, and remove button to the new author div
+            newAuthorDiv.appendChild(label);
+            newAuthorDiv.appendChild(select);
+            newAuthorDiv.appendChild(removeButton);
+            // Append the new author div to the authors section
+            authorsSection.appendChild(newAuthorDiv);
         });
-
-        function removeAuthor(authorId) {
-            let authorGroup = document.getElementById('author-group-' + authorId);
-            authorGroup.remove();
-        }
     </script>
+
 }

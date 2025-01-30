@@ -1,4 +1,4 @@
-﻿using LibraryManager.ActionFilters;
+﻿ using LibraryManager.ActionFilters;
 using LibraryManager.Entities;
 using LibraryManager.ExtentionMethods;
 using LibraryManager.Repositories;
@@ -51,9 +51,6 @@ namespace LibraryManager.Controllers
         [HttpPost]
         public IActionResult AddBook(AddBookVM model)
         {
-
-
-
             GenresRepository genresRepository = new GenresRepository();
             AuthorsRepository authorsRepository = new AuthorsRepository();
             BooksRepository booksRepository = new BooksRepository();
@@ -79,7 +76,7 @@ namespace LibraryManager.Controllers
             book.Title = model.Title;
             book.GenreId = model.Genre.Id;
             book.OnStock = model.Quantity;
-            book.ImageUrl = $"~/images/{model.ImageUrl}";
+            book.ImageUrl = $"~/images/{model.ImageUrl.FileName}";
             booksRepository.Save(book);
 
 
