@@ -1,0 +1,9 @@
+﻿using LibraryManager.Core.Entities;
+
+
+namespace LibraryManager.Data.Repositories
+{
+    public class GenresRepository : BaseRepository<Genre>
+    {
+    }
+}

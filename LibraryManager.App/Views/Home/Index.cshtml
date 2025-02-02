@@ -1,0 +1,52 @@
+﻿@model LibraryManager.App.ViewModels.Home.IndexVM;
+@using LibraryManager.Core.Entities;
+
+@{
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+<form method="post" asp-action="Index" asp-controller="Home">
+    <select name="genre" onchange="this.form.submit()">
+        <option value="">All Genres</option>
+        @foreach (Genre genre in Model.Genres)
+        {
+            <option value="@genre.Name" selected="@(Model.SelectedGenre == genre.Name? "selected" : null)">
+                @genre.Name
+            </option>
+        }
+    </select>
+</form>
+
+<div class="container my-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (Book book in Model.Books)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <div class="text-center mt-3">
+                        <img src="@Url.Content(@book.ImageUrl)" alt="Book Cover Photo" class="img-fluid img-thumbnail" style="width: 200px; height: 300px;" />
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-center text-primary fw-bold">@book.Title</h5>
+
+                        <p class="card-text">
+                            <strong>Genre:</strong> @book.Genre.Name<br />
+                            <strong>Author:</strong>
+                            @string.Join(" ", Model.BookAuthors.Where(x => x.BookId == book.Id).Select(x => x.Author.Name).ToList())
+                        </p>
+
+                        @if (book.OnStock > 0)
+                        {
+                            <p class="text-success fw-bold">On Stock: @book.OnStock</p>
+                            <a asp-controller="Home" asp-action="Borrow" asp-route-id="@book.Id" class="btn btn-primary w-100">Borrow</a>
+                        }
+                        else
+                        {
+                            <p class="text-danger fw-bold">OUT OF STOCK</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

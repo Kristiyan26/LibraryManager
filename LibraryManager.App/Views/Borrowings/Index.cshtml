@@ -1,0 +1,46 @@
+﻿@model LibraryManager.App.ViewModels.Borrowings.IndexVM;
+@using LibraryManager.Core.Entities;
+
+@{
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "My Borrowings";
+}
+
+<div class="container my-4">
+    <h2 class="text-center text-primary mb-4">My Borrowings</h2>
+    @foreach (Borrowing borrowing in Model.Borrowings)
+    {
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-md-start text-center mb-2 mb-md-0">
+                        <h5 class="card-title text-primary fw-bold">@borrowing.Book.Title</h5>
+                    </div>
+
+                    <div class="col-md-3 text-md-start text-center">
+                        <p class="mb-1">
+                            <strong>Borrowed on:</strong> @borrowing.BorrowedOn.ToString("dd MMM yyyy")
+                        </p>
+                    </div>
+
+                    @if (borrowing.ReturnOn != null)
+                    {
+                        <div class="col-md-3 text-md-start text-center">
+                            <p class="mb-1">
+                                <strong>Returned on:</strong> @borrowing.ReturnOn?.ToString("dd MMM yyyy")
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-3 text-md-start text-center">
+                            <a asp-controller="Borrowings" asp-action="ReturnBorrowedBook" asp-route-id="@borrowing.Id" class="btn btn-danger btn-sm">
+                                Return to Library
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

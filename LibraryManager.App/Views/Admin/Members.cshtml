@@ -1,0 +1,46 @@
+﻿@model LibraryManager.App.ViewModels.Admin.MembersVM;
+@using LibraryManager.Core.Entities;
+
+@{
+    Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["Title"] = "List of Members";
+}
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-teal">List of Members</h1>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Members.Any())
+                {
+                    @foreach (var member in Model.Members)
+                    {
+                        <tr>
+                            <td>@member.Username</td>
+                            <td>@member.FirstName</td>
+                            <td>@member.LastName</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            No members found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
