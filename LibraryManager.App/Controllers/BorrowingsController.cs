@@ -11,31 +11,35 @@ namespace LibraryManager.App.Controllers
     [AuthenticationFilter]
     public class BorrowingsController : Controller
     {
+        private readonly BorrowingsRepository _borrowingsRepo;
+        private readonly BooksRepository _booksRepo;
+        public BorrowingsController(BorrowingsRepository borrowingsRepo, BooksRepository booksRepo)
+        {
+            _borrowingsRepo = borrowingsRepo;
+            _booksRepo = booksRepo;
+        }
         public IActionResult Index()
         {
-            BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
 
             IndexVM model = new IndexVM();
 
             Member member = HttpContext.Session.GetObject<Member>("loggedMember");
 
-            model.Borrowings = borrowingsRepository.GetAll(x => x.MemberId == member.Id);
+            model.Borrowings = _borrowingsRepo.GetAll(x => x.MemberId == member.Id);
             return View(model);
         }
 
         public IActionResult ReturnBorrowedBook(int id)
         {
-            BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
-            BooksRepository booksRepository = new BooksRepository();
 
-            Borrowing borrowing = borrowingsRepository.GetFirstOrDefault(b => b.Id == id);
+            Borrowing borrowing = _borrowingsRepo.GetFirstOrDefault(b => b.Id == id);
             borrowing.ReturnOn = DateTime.Now;
 
-            Book book = booksRepository.GetFirstOrDefault(book => book.Id == borrowing.BookId);
+            Book book = _booksRepo.GetFirstOrDefault(book => book.Id == borrowing.BookId);
             book.OnStock++;
 
-            booksRepository.Save(book);
-            borrowingsRepository.Save(borrowing);
+            _booksRepo.Save(book);
+            _borrowingsRepo.Save(borrowing);
             return RedirectToAction("Index", "Borrowings");
         }
     }

@@ -1,10 +1,16 @@
 ﻿using LibraryManager.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace LibraryManager.Data
 {
     public class LibraryManagerDbContext : DbContext
     {
+
+        public LibraryManagerDbContext(DbContextOptions<LibraryManagerDbContext>options): base(options) 
+        {
+                
+        }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
 
@@ -26,14 +32,6 @@ namespace LibraryManager.Data
             BookAuthors = Set<BookAuthor>();
 
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseSqlServer("Server=localhost;Database=LibraryManagerDB;Trusted_Connection=True;TrustServerCertificate=true")
-                .UseLazyLoadingProxies();
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasData(

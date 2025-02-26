@@ -13,23 +13,35 @@ namespace LibraryManager.App.Controllers
     [AdminAuthenticationFilter]
     public class AdminController : Controller
     {
+        private readonly MembersRepository _membersRepo;
+        private readonly BooksRepository _booksRepo;
+        private readonly AuthorsRepository _authorsRepo;
+        private readonly BookAuthorsRepository _bookAuthorsRepo;
+        private readonly GenresRepository _genresRepo;
+
+        public AdminController(MembersRepository membersRepo, BooksRepository booksRepo, AuthorsRepository authorsRepo, BookAuthorsRepository bookAuthorsRepo, GenresRepository genresRepo)
+        {
+            _membersRepo = membersRepo;
+            _booksRepo = booksRepo;
+            _authorsRepo = authorsRepo;
+            _bookAuthorsRepo = bookAuthorsRepo;
+            _genresRepo = genresRepo;
+        }
         public IActionResult Members()
         {
-            MembersRepository membersRepository = new MembersRepository();
 
             MembersVM model = new MembersVM();
 
-            model.Members = membersRepository.GetAll(m => m.Role == "Member");
+            model.Members = _membersRepo.GetAll(m => m.Role == "Member");
 
             return View(model);
         }
         public IActionResult Books()
         {
-            BooksRepository booksRepository = new BooksRepository();
 
             BooksVM model = new BooksVM();
 
-            model.Books = booksRepository.GetAll();
+            model.Books = _booksRepo.GetAll();
 
             return View(model);
         }
@@ -39,11 +51,8 @@ namespace LibraryManager.App.Controllers
         {
             AddBookVM model = new AddBookVM();
 
-            AuthorsRepository authorsRepository = new AuthorsRepository();
-            GenresRepository genresRepository = new GenresRepository();
-
-            model.Authors = authorsRepository.GetAll();
-            model.Genres = genresRepository.GetAll();
+            model.Authors = _authorsRepo.GetAll();
+            model.Genres = _genresRepo.GetAll();
 
             return View(model);
         }
@@ -51,17 +60,12 @@ namespace LibraryManager.App.Controllers
         [HttpPost]
         public IActionResult AddBook(AddBookVM model)
         {
-            GenresRepository genresRepository = new GenresRepository();
-            AuthorsRepository authorsRepository = new AuthorsRepository();
-            BooksRepository booksRepository = new BooksRepository();
-            BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
-
 
             Genre genre = null;
 
             if (model.Genre.Id != 0)
             {
-                genre = genresRepository.GetFirstOrDefault(g => g.Id == model.Genre.Id);
+                genre = _genresRepo.GetFirstOrDefault(g => g.Id == model.Genre.Id);
             }
             else
             {
@@ -69,7 +73,7 @@ namespace LibraryManager.App.Controllers
 
                 genre.Name = model.Genre.Name;
 
-                genresRepository.Save(genre);
+                _genresRepo.Save(genre);
 
             }
             Book book = new Book();
@@ -77,7 +81,7 @@ namespace LibraryManager.App.Controllers
             book.GenreId = model.Genre.Id;
             book.OnStock = model.Quantity;
             book.ImageUrl = $"~/images/{model.ImageUrl.FileName}";
-            booksRepository.Save(book);
+            _booksRepo.Save(book);
 
 
 
@@ -87,8 +91,8 @@ namespace LibraryManager.App.Controllers
                 {
                     BookAuthor bookAuthor = new BookAuthor();
                     bookAuthor.BookId = book.Id;
-                    bookAuthor.AuthorId = authorsRepository.GetFirstOrDefault(a => a.Id == selectedAuthor.Id).Id;
-                    bookAuthorsRepository.Save(bookAuthor);
+                    bookAuthor.AuthorId = _authorsRepo.GetFirstOrDefault(a => a.Id == selectedAuthor.Id).Id;
+                    _bookAuthorsRepo.Save(bookAuthor);
 
                 }
 
@@ -106,13 +110,12 @@ namespace LibraryManager.App.Controllers
         [HttpPost]
         public IActionResult AddAuthor(AddAuthorVM model)
         {
-            AuthorsRepository authorsRepository = new AuthorsRepository();
 
             Author author = new Author();
 
             author.Name = model.Author.Name;
 
-            authorsRepository.Save(author);
+            _authorsRepo.Save(author);
 
             return RedirectToAction("AddBook", "Admin");
         }
@@ -120,17 +123,14 @@ namespace LibraryManager.App.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            BooksRepository booksRepository = new BooksRepository();
-            BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
-
             List<Author> authors = new List<Author>();
 
 
             EditVM model = new EditVM();
 
-            model.Book = booksRepository.GetFirstOrDefault(x => x.Id == id);
+            model.Book = _booksRepo.GetFirstOrDefault(x => x.Id == id);
 
-            model.Authors = bookAuthorsRepository.
+            model.Authors = _bookAuthorsRepo.
                 GetAll(x => x.BookId == id).Select(x => x.Author).ToList();
 
 
@@ -140,9 +140,8 @@ namespace LibraryManager.App.Controllers
         [HttpPost]
         public IActionResult Edit(EditVM model)
         {
-            BooksRepository booksRepository = new BooksRepository();
 
-            Book book = booksRepository.GetFirstOrDefault(x => x.Id == model.Book.Id);
+            Book book = _booksRepo.GetFirstOrDefault(x => x.Id == model.Book.Id);
 
 
             if (model.ImageFile != null)
@@ -156,7 +155,7 @@ namespace LibraryManager.App.Controllers
             book.Title = model.Book.Title;
             book.OnStock = model.Book.OnStock;
 
-            booksRepository.Save(book);
+            _booksRepo.Save(book);
 
             return RedirectToAction("Books", "Admin");
         }
@@ -165,9 +164,8 @@ namespace LibraryManager.App.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            BooksRepository booksRepository = new BooksRepository();
-            Book book = booksRepository.GetFirstOrDefault(x => x.Id == id);
-            booksRepository.Delete(book);
+            Book book = _booksRepo.GetFirstOrDefault(x => x.Id == id);
+            _booksRepo.Delete(book);
             return RedirectToAction("Books", "Admin");
 
         }

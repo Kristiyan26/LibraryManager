@@ -14,9 +14,20 @@ namespace LibraryManager.App.Controllers
     public class HomeController : Controller
     {
         private readonly IPasswordHasher<Member> _passwordHasher;
-        public HomeController(IPasswordHasher<Member> passwordHasher)
+        private readonly MembersRepository _membersRepo;
+        private readonly BooksRepository _booksRepo;
+        private readonly BookAuthorsRepository _bookAuthorsRepo;
+        private readonly GenresRepository _genresRepo;
+        private readonly BorrowingsRepository _borrowingsRepo;
+
+        public HomeController(IPasswordHasher<Member> passwordHasher, MembersRepository membersRepo, BooksRepository booksRepo,BookAuthorsRepository bookAuthorsRepo, GenresRepository genresRepo, BorrowingsRepository borrowingsRepo)
         {
-                _passwordHasher = passwordHasher;   
+            _passwordHasher = passwordHasher;
+            _membersRepo = membersRepo;
+            _booksRepo = booksRepo;
+            _bookAuthorsRepo = bookAuthorsRepo;
+            _genresRepo = genresRepo;
+            _borrowingsRepo = borrowingsRepo;
         }
 
 
@@ -24,23 +35,19 @@ namespace LibraryManager.App.Controllers
         [HttpPost]
         public IActionResult Index(string? genre)
         {
-            BooksRepository booksRepository = new BooksRepository();
-            BookAuthorsRepository bookAuthorsRepository = new BookAuthorsRepository();
-            GenresRepository genresRepository = new GenresRepository();
-
 
             IndexVM model = new IndexVM();
             model.SelectedGenre = genre;
-            model.BookAuthors = bookAuthorsRepository.GetAll();
-            model.Genres = genresRepository.GetAll();
+            model.BookAuthors = _bookAuthorsRepo.GetAll();
+            model.Genres = _genresRepo.GetAll();
 
             if (!string.IsNullOrEmpty(genre))
             {
-                model.Books = booksRepository.GetAll(x => x.Genre.Name == genre);
+                model.Books = _booksRepo.GetAll(x => x.Genre.Name == genre);
             }
             else
             {
-                model.Books = booksRepository.GetAll();
+                model.Books = _booksRepo.GetAll();
             }
 
             return View(model);
@@ -57,7 +64,6 @@ namespace LibraryManager.App.Controllers
 
         public IActionResult Login(LoginVM model)
         {
-            MembersRepository membersRepository = new MembersRepository();
 
             if (!ModelState.IsValid)
             {
@@ -66,7 +72,7 @@ namespace LibraryManager.App.Controllers
 
 
 
-            Member loggedMember = membersRepository.GetFirstOrDefault(x => x.Username == model.Username);
+            Member loggedMember = _membersRepo.GetFirstOrDefault(x => x.Username == model.Username);
 
             if (loggedMember == null)
             {
@@ -117,10 +123,9 @@ namespace LibraryManager.App.Controllers
 
         public IActionResult Borrow(int id)
         {
-            BooksRepository booksRepository = new BooksRepository();
-            BorrowingsRepository borrowingsRepository = new BorrowingsRepository();
 
-            Book book = booksRepository.GetFirstOrDefault(b => b.Id == id);
+
+            Book book = _booksRepo.GetFirstOrDefault(b => b.Id == id);
 
             if (book == null && book.OnStock > 0)
             {
@@ -138,7 +143,7 @@ namespace LibraryManager.App.Controllers
             borrowing.BookId = book.Id;
             borrowing.BorrowedOn = DateTime.Now;
 
-            Borrowing check = borrowingsRepository.GetFirstOrDefault(x => x.MemberId == borrowing.MemberId
+            Borrowing check = _borrowingsRepo.GetFirstOrDefault(x => x.MemberId == borrowing.MemberId
                                                                 && x.BookId == borrowing.BookId
                                                                 && x.ReturnOn == null);
 
@@ -154,9 +159,9 @@ namespace LibraryManager.App.Controllers
             }
 
             book.OnStock--;
-            booksRepository.Save(book);
+            _booksRepo.Save(book);
 
-            borrowingsRepository.Save(borrowing);
+            _borrowingsRepo.Save(borrowing);
 
             return RedirectToAction("Index", "Borrowings");
 
@@ -173,14 +178,13 @@ namespace LibraryManager.App.Controllers
         [HttpPost]
         public IActionResult SignUp(SignUpVM model)
         {
-            MembersRepository membersRepository = new MembersRepository();
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
 
-            Member check = membersRepository.GetFirstOrDefault(x => x.Username == model.Username);
+            Member check = _membersRepo.GetFirstOrDefault(x => x.Username == model.Username);
 
             if (check != null)
             {
@@ -197,7 +201,7 @@ namespace LibraryManager.App.Controllers
                 newMember.LastName = model.LastName;
                 newMember.Role = "Member";
 
-                membersRepository.Save(newMember);
+                _membersRepo.Save(newMember);
                 HttpContext.Session.SetObject("loggedMember", newMember);
             }
             return RedirectToAction("Index", "Home");

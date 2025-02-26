@@ -4,15 +4,15 @@ using System.Linq.Expressions;
 
 namespace LibraryManager.Data.Repositories
 {
-    public class BaseRepository<T>
+    public abstract class BaseRepository<T>
         where T : BaseEntity
     {
         protected DbContext Context { get; set; }
         protected DbSet<T> Items { get; set; }
 
-        public BaseRepository()
+        public BaseRepository(LibraryManagerDbContext context)
         {
-            Context = new LibraryManagerDbContext();
+            Context = context;
             Items = Context.Set<T>();
         }
 

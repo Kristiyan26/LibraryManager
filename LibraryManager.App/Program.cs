@@ -1,6 +1,8 @@
 using LibraryManager.Core.Entities;
 using LibraryManager.Data;
+using LibraryManager.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManager.App
 {
@@ -12,9 +14,20 @@ namespace LibraryManager.App
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<LibraryManagerDbContext>();
+            builder.Services.AddDbContext<LibraryManagerDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                .UseLazyLoadingProxies();
+            });
             builder.Services.AddSession();
 
+
+            builder.Services.AddScoped<AuthorsRepository>();
+            builder.Services.AddScoped<BooksRepository>();
+            builder.Services.AddScoped<GenresRepository>();
+            builder.Services.AddScoped<BookAuthorsRepository>();
+            builder.Services.AddScoped<BorrowingsRepository>();
+            builder.Services.AddScoped<MembersRepository>();
             builder.Services.AddScoped<IPasswordHasher<Member>, PasswordHasher<Member>>();
 
             var app = builder.Build();
