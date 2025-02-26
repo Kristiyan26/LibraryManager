@@ -1,4 +1,6 @@
+using LibraryManager.Core.Entities;
 using LibraryManager.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryManager.App
 {
@@ -12,6 +14,8 @@ namespace LibraryManager.App
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<LibraryManagerDbContext>();
             builder.Services.AddSession();
+
+            builder.Services.AddScoped<IPasswordHasher<Member>, PasswordHasher<Member>>();
 
             var app = builder.Build();
 

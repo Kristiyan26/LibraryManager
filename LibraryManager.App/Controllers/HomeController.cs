@@ -5,6 +5,7 @@ using LibraryManager.Data.Repositories;
 using LibraryManager.App.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 
 namespace LibraryManager.App.Controllers
 {
@@ -12,6 +13,11 @@ namespace LibraryManager.App.Controllers
 
     public class HomeController : Controller
     {
+        private readonly IPasswordHasher<Member> _passwordHasher;
+        public HomeController(IPasswordHasher<Member> passwordHasher)
+        {
+                _passwordHasher = passwordHasher;   
+        }
 
 
         [HttpGet]
@@ -60,13 +66,21 @@ namespace LibraryManager.App.Controllers
 
 
 
-            Member loggedMember = membersRepository.GetFirstOrDefault(x => x.Username == model.Username &&
-                                                                 x.Password == model.Password);
+            Member loggedMember = membersRepository.GetFirstOrDefault(x => x.Username == model.Username);
 
             if (loggedMember == null)
             {
                 ModelState.AddModelError("authError", "Invalid username or password!");
                 return View(model);
+            }
+            else
+            {
+                PasswordVerificationResult result = _passwordHasher.VerifyHashedPassword(null, loggedMember.Password, model.Password);
+                if (result == PasswordVerificationResult.Failed)
+                {
+                    ModelState.AddModelError("authError", "Invalid username or password!");
+                    return View(model);
+                }
 
             }
 
@@ -77,11 +91,8 @@ namespace LibraryManager.App.Controllers
             }
             else
             {
-
-
                 HttpContext.Session.SetObject("loggedMember", loggedMember);
                 return RedirectToAction("Index", "Home");
-
             }
 
         }
@@ -181,9 +192,10 @@ namespace LibraryManager.App.Controllers
             {
                 Member newMember = new Member();
                 newMember.Username = model.Username;
-                newMember.Password = model.Password;
+                newMember.Password = _passwordHasher.HashPassword(null, model.Password);
                 newMember.FirstName = model.FirstName;
                 newMember.LastName = model.LastName;
+                newMember.Role = "Member";
 
                 membersRepository.Save(newMember);
                 HttpContext.Session.SetObject("loggedMember", newMember);

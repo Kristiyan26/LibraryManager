@@ -5,7 +5,6 @@ namespace LibraryManager.Data
 {
     public class LibraryManagerDbContext : DbContext
     {
-
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
 
@@ -87,8 +86,6 @@ namespace LibraryManager.Data
 
             );
 
-
-
             modelBuilder.Entity<Member>().HasData(
                  new Member
                  {
@@ -131,8 +128,6 @@ namespace LibraryManager.Data
                 });
 
         }
-
-
 
     }
 }
