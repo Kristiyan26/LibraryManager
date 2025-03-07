@@ -49,7 +49,9 @@ namespace LibraryManager.Data.Repositories
         }
 
         public List<T> GetAll(Expression<Func<T, bool>> filter = null,
-                              Expression<Func<T, bool>> orderBy = null)
+                              Expression<Func<T, bool>> orderBy = null,
+                              int page = 1,
+                              int itemsPerPage = Int32.MaxValue)
         {
             IQueryable<T> query = Items;
 
@@ -62,7 +64,7 @@ namespace LibraryManager.Data.Repositories
                 query = query.OrderBy(orderBy);
             }
 
-            return query.ToList();
+            return query.Skip(itemsPerPage*(page-1)).Take(itemsPerPage).ToList();
         }
     }
 }

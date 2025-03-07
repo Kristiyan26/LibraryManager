@@ -6,6 +6,7 @@ using LibraryManager.App.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using LibraryManager.App.ViewModels.Shared;
 
 namespace LibraryManager.App.Controllers
 {
@@ -33,22 +34,34 @@ namespace LibraryManager.App.Controllers
 
         [HttpGet]
         [HttpPost]
-        public IActionResult Index(string? genre)
+        public IActionResult Index(IndexVM model,int page)
         {
 
-            IndexVM model = new IndexVM();
-            model.SelectedGenre = genre;
+            
+
             model.BookAuthors = _bookAuthorsRepo.GetAll();
             model.Genres = _genresRepo.GetAll();
 
-            if (!string.IsNullOrEmpty(genre))
+            model.Pager = model.Pager ?? new PagerVM();
+
+            model.Pager.Page = page<=0
+                                      ? 1
+                                      : page;
+
+            model.Pager.ItemsPerPage = model.Pager.ItemsPerPage<=0
+                                                       ? 3
+                                                       : model.Pager.ItemsPerPage;
+
+            if (!string.IsNullOrEmpty(model.SelectedGenre))
             {
-                model.Books = _booksRepo.GetAll(x => x.Genre.Name == genre);
+                model.Books = _booksRepo.GetAll(x => x.Genre.Name == model.SelectedGenre,null,model.Pager.Page,model.Pager.ItemsPerPage);
             }
             else
             {
-                model.Books = _booksRepo.GetAll();
+                model.Books = _booksRepo.GetAll(null,null,model.Pager.Page,model.Pager.ItemsPerPage);
             }
+
+            model.Pager.TotalPages = (int)Math.Ceiling(_booksRepo.GetAll().Count() / (double)model.Pager.ItemsPerPage);
 
             return View(model);
         }

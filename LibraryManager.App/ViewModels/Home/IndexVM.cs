@@ -1,4 +1,5 @@
-﻿using LibraryManager.Core.Entities;
+﻿using LibraryManager.App.ViewModels.Shared;
+using LibraryManager.Core.Entities;
 
 namespace LibraryManager.App.ViewModels.Home
 {
@@ -11,6 +12,8 @@ namespace LibraryManager.App.ViewModels.Home
         public string SelectedGenre { get; set; }
 
         public List<BookAuthor> BookAuthors { get; set; }
+
+        public PagerVM Pager { get; set; }
 
 
 
