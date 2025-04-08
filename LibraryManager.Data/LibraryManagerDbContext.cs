@@ -1,5 +1,7 @@
 ﻿using LibraryManager.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 
 namespace LibraryManager.Data
@@ -7,9 +9,10 @@ namespace LibraryManager.Data
     public class LibraryManagerDbContext : DbContext
     {
 
-        public LibraryManagerDbContext(DbContextOptions<LibraryManagerDbContext>options): base(options) 
+        private IPasswordHasher<Member> _passwordHasher;
+        public LibraryManagerDbContext(DbContextOptions<LibraryManagerDbContext> options, IPasswordHasher<Member> passwordhasher) : base(options)
         {
-                
+            _passwordHasher = passwordhasher;
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
@@ -31,6 +34,11 @@ namespace LibraryManager.Data
             Borrowings = Set<Borrowing>();
             BookAuthors = Set<BookAuthor>();
 
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,12 +92,13 @@ namespace LibraryManager.Data
 
             );
 
+            var pass = _passwordHasher.HashPassword(null, "0000");
             modelBuilder.Entity<Member>().HasData(
                  new Member
                  {
                      Id = 1,
                      Username = "Admin",
-                     Password = "0000",
+                     Password = pass,
                      FirstName = "Admin",
                      LastName = "Adminov",
                      Role = "Admin"
@@ -99,7 +108,7 @@ namespace LibraryManager.Data
                 {
                     Id = 2,
                     Username = "MladMilioner",
-                    Password = "0000",
+                    Password = pass,
                     FirstName = "Kristiyan",
                     LastName = "Lyubenov",
                     Role = "Member"
@@ -109,7 +118,7 @@ namespace LibraryManager.Data
                 {
                     Id = 3,
                     Username = "SimonG",
-                    Password = "0000",
+                    Password = pass,
                     FirstName = "Stoyan",
                     LastName = "Kolev",
                     Role = "Member"
